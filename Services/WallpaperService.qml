@@ -295,6 +295,9 @@ Singleton {
             Logger.d("Wallpaper", "Cache not found, starting fresh");
             root.currentWallpapers = {
             };
+            // Generate colors from system default wallpaper on first run
+            Logger.d("Wallpaper", "Generating initial colors from default wallpaper:", root.systemDefaultWallpaper);
+            generateColors(root.systemDefaultWallpaper);
             root.isInitialized = true;
         }
 

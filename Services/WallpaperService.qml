@@ -76,15 +76,17 @@ Singleton {
         generateColors(path);
     }
 
+    readonly property string colorGenScript: "/etc/xdg/quickshell/noctalia-shell/Scripts/python/src/theming/template-processor.py"
+    readonly property string colorTemplate: Quickshell.shellDir + "/Assets/Templates/xenon_colors.json"
+
     function generateColors(path) {
         if (!path)
             return ;
 
-        var cachePath = colorsCacheFile;
-        var logPath = Quickshell.env("HOME") + "/.cache/xenon/matugen.log";
-        var cmd = "/usr/bin/matugen image '" + path + "' -j hex > '" + cachePath + "' 2> '" + logPath + "'";
+        var outputPath = colorsCacheFile;
+        var cmd = 'python3 "' + colorGenScript + '" "' + path + '" --scheme-type tonal-spot --dark -r "' + colorTemplate + ':' + outputPath + '"';
         Logger.d("Wallpaper", "Generating colors:", cmd);
-        Ipc.runMatugen(cmd);
+        Ipc.runColorGen(cmd);
     }
 
     function applyOpenRGB() {
@@ -120,12 +122,12 @@ Singleton {
     Component.onCompleted: init()
 
     Connections {
-        function onMatugenFinished(code) {
+        function onColorGenFinished(code) {
             if (code === 0) {
-                Logger.d("Wallpaper", "Matugen finished successfully");
+                Logger.d("Wallpaper", "Color generation finished successfully");
                 Qt.callLater(applyOpenRGB);
             } else {
-                Logger.e("Wallpaper", "Matugen failed with code:", code);
+                Logger.e("Wallpaper", "Color generation failed with code:", code);
             }
         }
 

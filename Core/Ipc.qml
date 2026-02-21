@@ -6,7 +6,7 @@ pragma Singleton
 Singleton {
     id: root
 
-    signal matugenFinished(int code)
+    signal colorGenFinished(int code)
     signal thumbnailGenerationFinished(int code)
     signal openRgbFinished(int code)
     signal openRgbDevicesListFetched(string output)
@@ -24,9 +24,9 @@ Singleton {
         dirCreator.running = true;
     }
 
-    function runMatugen(cmd) {
-        matugenProcess.command = ["sh", "-c", cmd];
-        matugenProcess.running = true;
+    function runColorGen(cmd) {
+        colorGenProcess.command = ["sh", "-c", cmd];
+        colorGenProcess.running = true;
     }
 
     function generateThumbnails(scriptPath, srcDir, destDir) {
@@ -77,11 +77,11 @@ Singleton {
     }
 
     Process {
-        id: matugenProcess
+        id: colorGenProcess
 
         running: false
         onExited: (code, status) => {
-            return root.matugenFinished(code);
+            return root.colorGenFinished(code);
         }
     }
 

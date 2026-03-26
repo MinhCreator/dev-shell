@@ -75,8 +75,8 @@ Singleton {
         Ipc.copyWallpaper(path, Quickshell.env("HOME") + "/.cache/xenon/current_wallpaper");
         generateColors(path);
     }
-
-    readonly property string colorGenScript: "/etc/xdg/quickshell/noctalia-shell/Scripts/python/src/theming/template-processor.py"
+template-processor.py
+    readonly property string colorGenScript: Quickshell.ShellDir + "/Scripts/template-processor.py"
     readonly property string colorTemplate: Quickshell.shellDir + "/Assets/Templates/xenon_colors.json"
 
     function generateColors(path) {

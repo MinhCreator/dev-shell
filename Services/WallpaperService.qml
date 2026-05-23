@@ -228,9 +228,9 @@ Singleton {
                     if (colors.source_color)
                         selectedColor = (typeof colors.source_color === "string") ? colors.source_color : (colors.source_color.default || colors.source_color.light || colors.source_color.dark);
                     else if (colors.tertiary)
-                        selectedColor = (typeof colors.tertiary === "string") ? colors.tertiary : (colors.tertiary.light || colors.tertiary.default);
+                        selectedColor = (typeof colors.tertiary === "string") ? colors.tertiary : (colors.tertiary.default || colors.tertiary.light || colors.tertiary.dark);
                     else if (colors.primary)
-                        selectedColor = (typeof colors.primary === "string") ? colors.primary : (colors.primary.light || colors.primary.default);
+                        selectedColor = (typeof colors.primary === "string") ? colors.primary : (colors.primary.default || colors.primary.light || colors.primary.dark);
                 }
                 if (selectedColor) {
                     var hex = selectedColor.toString().replace("#", "");

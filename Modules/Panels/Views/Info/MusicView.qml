@@ -99,15 +99,7 @@ Item {
             source: MprisService.artUrl
             fillMode: Image.PreserveAspectCrop
             opacity: status === Image.Ready ? 1 : 0
-
-            Behavior on opacity {
-                NumberAnimation {
-                    duration: 400
-                    easing.type: Easing.InOutQuad
-                }
-
-            }
-
+            onStatusChanged: console.log("albumArt status changed to: " + status + " for source: " + source)
         }
 
         // Content for when a player is active

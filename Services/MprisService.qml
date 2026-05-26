@@ -11,7 +11,40 @@ Singleton {
     property string title: activePlayer ? activePlayer.trackTitle : "No Media"
     property string artist: activePlayer ? activePlayer.trackArtist : ""
     property string album: activePlayer ? activePlayer.trackAlbum : ""
-    property string artUrl: activePlayer ? activePlayer.trackArtUrl : ""
+    property string rawArtUrl: activePlayer ? activePlayer.trackArtUrl : ""
+    property string rawTitle: activePlayer ? activePlayer.trackTitle : ""
+    property string cachedArtUrl: ""
+    property string cachedTrackKey: ""
+
+    onRawArtUrlChanged: updateArtFallback()
+    onRawTitleChanged: updateArtFallback()
+
+    function updateArtFallback() {
+        if (!activePlayer) {
+            artUrl = "";
+            return;
+        }
+        let url = rawArtUrl;
+        if (url) {
+            if (url.startsWith("http://") || url.startsWith("https://") || url.startsWith("file://") || url.startsWith("qrc:")) {
+                // Keep as is
+            } else if (url.startsWith("/")) {
+                url = "file://" + url;
+            }
+            cachedArtUrl = url;
+            cachedTrackKey = rawTitle + "|" + activePlayer.trackArtist;
+            artUrl = url;
+        } else {
+            let currentKey = rawTitle + "|" + activePlayer.trackArtist;
+            if (currentKey === cachedTrackKey && cachedArtUrl !== "") {
+                artUrl = cachedArtUrl;
+            } else {
+                artUrl = "";
+            }
+        }
+    }
+
+    property string artUrl: ""
     property double position: 0
     property double length: activePlayer ? activePlayer.length : 0
     property var _players: Mpris.players.values

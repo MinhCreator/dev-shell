@@ -7,7 +7,7 @@ Rectangle {
     id: root
 
     required property var colors
-    property string fontFamily: "Inter" // Fallback if not passed, but Bar passes it usually? Bar.qml didn't pass fontFamily/fontSize to PowerButton previously. I need to check Bar.qml if I can pass them.
+    property string fontFamily: "Inter"
     property int fontSize: 12
 
     Layout.preferredHeight: 30
@@ -92,12 +92,12 @@ Rectangle {
             Layout.preferredWidth: 24
             Layout.preferredHeight: 24
             radius: 12
-            color: Qt.rgba(root.colors.red.r, root.colors.red.g, root.colors.red.b, 0.2)
+            color: "transparent"
 
             Icon {
                 anchors.centerIn: parent
                 icon: Icons.power
-                color: root.colors.red
+                color: root.colors.fg
                 font.pixelSize: root.fontSize
             }
 

@@ -101,12 +101,12 @@ Rectangle {
             Layout.preferredWidth: 24
             Layout.preferredHeight: 24
             radius: 12
-            color: BatteryService.getStateColor(root.batteryPercent, root.batteryCharging, root.batteryFull)
+            color: "transparent"
 
             Icon {
                 anchors.centerIn: parent
                 icon: BatteryService.getIcon(root.batteryPercent, root.batteryCharging, root.batteryReady)
-                color: root.colors.bg
+                color: root.colors.fg
                 font.pixelSize: root.fontSize
             }
 

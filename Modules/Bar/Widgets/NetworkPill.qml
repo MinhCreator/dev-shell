@@ -104,12 +104,12 @@ Rectangle {
             Layout.preferredWidth: 24
             Layout.preferredHeight: 24
             radius: 12
-            color: (networkService.ethernetConnected || networkService.wifiEnabled) ? Qt.rgba(root.colors.purple.r, root.colors.purple.g, root.colors.purple.b, 0.2) : Qt.rgba(root.colors.muted.r, root.colors.muted.g, root.colors.muted.b, 0.2)
+            color: "transparent"
 
             Icon {
                 anchors.centerIn: parent
                 icon: networkService.ethernetConnected ? Icons.networkEthernet : (networkService.wifiEnabled ? Icons.networkWifiConnected : Icons.networkWifiDisconnected)
-                color: (networkService.ethernetConnected || networkService.wifiEnabled) ? root.colors.purple : root.colors.muted
+                color: (networkService.ethernetConnected || networkService.wifiEnabled) ? root.colors.fg : root.colors.muted
                 font.pixelSize: root.fontSize
             }
 

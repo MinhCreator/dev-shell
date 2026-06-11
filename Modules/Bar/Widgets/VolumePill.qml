@@ -56,7 +56,7 @@ Rectangle {
 
                 anchors.verticalCenter: parent.verticalCenter
                 text: (volumeService && volumeService.muted) ? "MUT" : (volumeLevel + "%")
-                color: (volumeService && volumeService.muted) ? root.colors.red : root.colors.fg
+                color: (volumeService && volumeService.muted) ? root.colors.muted : root.colors.fg
                 font.pixelSize: root.fontSize
                 font.family: root.fontFamily
                 font.bold: true
@@ -96,12 +96,12 @@ Rectangle {
             Layout.preferredWidth: 24
             Layout.preferredHeight: 24
             radius: 12
-            color: (volumeService && volumeService.muted) ? Qt.rgba(root.colors.red.r, root.colors.red.g, root.colors.red.b, 0.2) : Qt.rgba(root.colors.yellow.r, root.colors.yellow.g, root.colors.yellow.b, 0.2)
+            color: "transparent"
 
             Icon {
                 anchors.centerIn: parent
                 icon: volumeService ? volumeService.icon : Icons.volumeHigh
-                color: (volumeService && volumeService.muted) ? root.colors.red : root.colors.yellow
+                color: (volumeService && volumeService.muted) ? root.colors.muted : root.colors.fg
                 font.pixelSize: root.fontSize
             }
 

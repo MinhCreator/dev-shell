@@ -3,7 +3,8 @@ import Quickshell
 import Quickshell.Services.Pipewire
 
 import qs.Core
-Item {
+pragma Singleton
+Singleton {
     id: root
 
     PwObjectTracker {
@@ -30,7 +31,8 @@ Item {
     }
 
     readonly property bool ready: !!sink
-    readonly property real volume: sink?.audio?.volume ?? 0
+    property real volume: sink?.audio?.volume ?? 0
+    Behavior on volume { NumberAnimation { duration: 150; easing.type: Easing.OutCubic } }
     readonly property bool muted: sink?.audio?.muted ?? false
     readonly property string description: sink?.description ?? "Audio Output"
     

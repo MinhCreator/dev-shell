@@ -49,22 +49,6 @@ PanelWindow {
         id: appColors
     }
 
-    CpuService {
-        id: cpuService
-    }
-
-    MemService {
-        id: memService
-    }
-
-    DiskService {
-        id: diskService
-    }
-
-    SystemInfoService {
-        id: systemInfo
-    }
-
     Connections {
         function onRequestInfoPanelTab(tabIndex) {
             root.currentTab = tabIndex;
@@ -396,7 +380,7 @@ PanelWindow {
 
         InfoViews.HomeView {
             theme: appColors
-            sysInfo: systemInfo
+            sysInfo: SystemInfoService
         }
 
     }
@@ -436,12 +420,12 @@ PanelWindow {
 
         InfoViews.SystemView {
             theme: appColors
-            cpuUsage: cpuService.usage
-            memUsage: memService.usage
-            memUsed: memService.used
-            memTotal: memService.total
-            diskUsage: diskService.usage
-            diskFree: diskService.free
+            cpuUsage: CpuService.usage
+            memUsage: MemService.usage
+            memUsed: MemService.used
+            memTotal: MemService.total
+            diskUsage: DiskService.usage
+            diskFree: DiskService.free
         }
 
     }

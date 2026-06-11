@@ -2,8 +2,9 @@ import QtQuick
 import Quickshell
 import Quickshell.Io
 import qs.Core
+pragma Singleton
 
-Item {
+Singleton {
     id: root
 
     property string userName: "User"

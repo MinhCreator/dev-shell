@@ -1,7 +1,9 @@
 import QtQuick
+import Quickshell
 import Quickshell.Io
+pragma Singleton
 
-Item {
+Singleton {
     property string version: "Linux"
 
     Process {

@@ -8,13 +8,13 @@ Item {
 
     property var config: Config
     property alias colors: colorsService
-    property alias cpu: cpuService
-    property alias os: osService
-    property alias mem: memService
-    property alias disk: diskService
-    property alias time: timeService
-    property alias timezone: timezoneService
-    property alias volume: volumeService
+    property var cpu: CpuService
+    property var os: OsService
+    property var mem: MemService
+    property var disk: DiskService
+    property var time: TimeService
+    property var timezone: TimeZone
+    property var volume: VolumeService
     property alias activeWindow: compositorService
     property alias layout: compositorService
     property alias appState: appStateService
@@ -25,30 +25,6 @@ Item {
         id: colorsService
     }
 
-    CpuService {
-        id: cpuService
-    }
-
-    OsService {
-        id: osService
-    }
-
-    MemService {
-        id: memService
-    }
-
-    DiskService {
-        id: diskService
-    }
-
-    TimeService {
-        id: timeService
-    }
-
-    TimeZone {
-        id: timezoneService
-    }
-
     Compositor {
         id: compositorService
     }
@@ -56,9 +32,4 @@ Item {
     GlobalState {
         id: appStateService
     }
-
-    VolumeService {
-        id: volumeService
-    }
-
 }

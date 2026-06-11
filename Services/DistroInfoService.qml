@@ -1,8 +1,9 @@
 import QtQuick
 import Quickshell
 import Quickshell.Io
+pragma Singleton
 
-QtObject {
+Singleton {
     id: root
 
     property string name: "Linux"

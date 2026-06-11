@@ -11,14 +11,6 @@ BentoCard {
     cardColor: colors.surface
     borderColor: colors.border
 
-    DiskService {
-        id: disk
-    }
-
-    VolumeService {
-        id: volume
-    }
-
     RowLayout {
         anchors.fill: parent
         anchors.margins: 14
@@ -27,7 +19,7 @@ BentoCard {
         ProgressRing {
             Layout.fillWidth: true
             Layout.fillHeight: true
-            value: disk.usage / 100
+            value: DiskService.usage / 100
             icon: "󰋊"
             accentColor: "#89DCEB"
             colors: root.colors
@@ -36,7 +28,7 @@ BentoCard {
         ProgressRing {
             Layout.fillWidth: true
             Layout.fillHeight: true
-            value: volume.volume
+            value: VolumeService.volume
             icon: "󰕾"
             accentColor: "#CBA6F7"
             colors: root.colors

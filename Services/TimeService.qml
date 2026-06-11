@@ -1,7 +1,9 @@
 import QtQuick
+import Quickshell
 import qs.Core
+pragma Singleton
 
-Item {
+Singleton {
     property string currentTime: Qt.formatDateTime(new Date(), Config.use24HourFormat ? "ddd, MMM dd - HH:mm" : "ddd, MMM dd - hh:mm AP")
 
     Timer {

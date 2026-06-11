@@ -21,9 +21,7 @@ ColumnLayout {
     width: parent.width
     spacing: 16
 
-    LocalServices.DistroInfoService {
-        id: distroInfo
-    }
+    property var distroInfo: LocalServices.DistroInfoService
 
     Process {
         id: kernelProc

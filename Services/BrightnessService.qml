@@ -5,6 +5,7 @@ pragma Singleton
 
 Singleton {
     property real brightness: 0
+    Behavior on brightness { NumberAnimation { duration: 250; easing.type: Easing.OutCubic } }
 
     function setBrightness(v) {
         var percent = Math.round(v * 100);

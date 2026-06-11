@@ -1,8 +1,11 @@
 import QtQuick
+import Quickshell
 import Quickshell.Io
+pragma Singleton
 
-Item {
+Singleton {
     property int usage: 0
+    Behavior on usage { NumberAnimation { duration: 500; easing.type: Easing.OutCubic } }
     property var lastIdle: 0
     property var lastTotal: 0
 

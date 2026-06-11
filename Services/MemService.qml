@@ -1,11 +1,14 @@
 import QtQuick
+import Quickshell
 import Quickshell.Io
 import qs.Core
+pragma Singleton
 
-Item {
+Singleton {
     property real total: 0
     property real used: 0
     property int usage: 0
+    Behavior on usage { NumberAnimation { duration: 500; easing.type: Easing.OutCubic } }
     property string outputBuffer: ""
 
     Process {

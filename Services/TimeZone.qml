@@ -1,8 +1,9 @@
 import QtQuick
 import Quickshell
 import Quickshell.Io
+pragma Singleton
 
-Item {
+Singleton {
     id: root
 
     property var timeZones: []

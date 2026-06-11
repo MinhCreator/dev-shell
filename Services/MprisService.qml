@@ -46,7 +46,6 @@ Singleton {
 
     property string artUrl: ""
     property double position: 0
-    Behavior on position { NumberAnimation { duration: 1000 } }
     property double length: activePlayer ? activePlayer.length : 0
     property var _players: Mpris.players.values
     property int playerCount: _players.length

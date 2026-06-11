@@ -1,5 +1,6 @@
 import QtQuick
 import Quickshell
+import Quickshell.Wayland
 import qs.Core
 import qs.Modules.Bar
 
@@ -16,6 +17,7 @@ Variants {
 
         screen: modelData
         visible: root.context.colors.isLoaded
+        exclusionMode: root.context.config.hideBar ? ExclusionMode.Ignore : ExclusionMode.Auto
         implicitHeight: {
             switch (root.context.config.barSize) {
             case "compact":
@@ -36,8 +38,20 @@ Variants {
         }
 
         margins {
-            top: (position === "top" && root.context.config.floatingBar) ? 5 : 0
-            bottom: (position === "bottom" && root.context.config.floatingBar) ? 5 : 0
+            top: {
+                if (position === "top") {
+                    if (root.context.config.hideBar) return -implicitHeight - 10;
+                    return root.context.config.floatingBar ? 5 : 0;
+                }
+                return 0;
+            }
+            bottom: {
+                if (position === "bottom") {
+                    if (root.context.config.hideBar) return -implicitHeight - 10;
+                    return root.context.config.floatingBar ? 5 : 0;
+                }
+                return 0;
+            }
             left: root.context.config.floatingBar ? 8 : 0
             right: root.context.config.floatingBar ? 8 : 0
         }
@@ -62,6 +76,20 @@ Variants {
                 easing.type: Easing.OutQuad
             }
 
+        }
+
+        Behavior on margins.top {
+            NumberAnimation {
+                duration: 300
+                easing.type: Easing.OutQuad
+            }
+        }
+
+        Behavior on margins.bottom {
+            NumberAnimation {
+                duration: 300
+                easing.type: Easing.OutQuad
+            }
         }
 
     }

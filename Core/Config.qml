@@ -12,6 +12,7 @@ Singleton {
     property string wallpaperDirectory: Quickshell.env("HOME") + "/Pictures/Wallpapers"
     property bool disableHover: false
     property bool floatingBar: false
+    property bool hideBar: false
     property string barPosition: "top"
     property string barSize: "fluid"
     property var colors: null
@@ -37,6 +38,7 @@ Singleton {
         configAdapter.wallpaperDirectory = root.wallpaperDirectory;
         configAdapter.disableHover = root.disableHover;
         configAdapter.floatingBar = root.floatingBar;
+        configAdapter.hideBar = root.hideBar;
         configAdapter.barPosition = root.barPosition;
         configAdapter.barSize = root.barSize;
         configAdapter.hideWorkspaceNumbers = root.hideWorkspaceNumbers;
@@ -91,6 +93,11 @@ Singleton {
 
     }
     onFloatingBarChanged: {
+        if (!_loading)
+            saveTimer.restart();
+
+    }
+    onHideBarChanged: {
         if (!_loading)
             saveTimer.restart();
 
@@ -181,6 +188,9 @@ Singleton {
                 if (configAdapter.floatingBar !== undefined)
                     root.floatingBar = configAdapter.floatingBar;
 
+                if (configAdapter.hideBar !== undefined)
+                    root.hideBar = configAdapter.hideBar;
+
                 if (configAdapter.barPosition)
                     root.barPosition = configAdapter.barPosition;
 
@@ -245,6 +255,7 @@ Singleton {
             property string wallpaperDirectory
             property bool disableHover
             property bool floatingBar
+            property bool hideBar
             property string barPosition
             property string barSize
             property var colors

@@ -36,6 +36,20 @@ ColumnLayout {
 
     ToggleButton {
         Layout.fillWidth: true
+        label: "Hide Bar"
+        sublabel: "Completely hide the main bar"
+        icon: "󰘻"
+        active: Config.hideBar
+        colors: context.colors
+        onActiveChanged: {
+            if (Config.hideBar !== active)
+                Config.hideBar = active;
+
+        }
+    }
+
+    ToggleButton {
+        Layout.fillWidth: true
         label: "Hide Workspace Numbers"
         sublabel: "Show dots instead of numbers for workspaces"
         icon: "󰍹"

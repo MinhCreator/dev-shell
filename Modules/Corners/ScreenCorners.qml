@@ -18,8 +18,8 @@ PanelWindow {
         }
     }
     property int cornerSize: 25
-    property bool topActive: !context.config.floatingBar && context.config.barPosition === "top"
-    property bool bottomActive: !context.config.floatingBar && context.config.barPosition === "bottom"
+    property bool topActive: !context.config.hideBar && !context.config.floatingBar && context.config.barPosition === "top"
+    property bool bottomActive: !context.config.hideBar && !context.config.floatingBar && context.config.barPosition === "bottom"
 
     visible: !context.activeWindow.isFullscreen
     color: "transparent"
@@ -85,6 +85,17 @@ PanelWindow {
 
                 }
 
+            },
+            Transition {
+                from: "active"
+                to: ""
+                NumberAnimation {
+                    target: topLeft
+                    property: "verticalSnap"
+                    to: 0
+                    duration: 300
+                    easing.type: Easing.OutQuad
+                }
             }
         ]
 
@@ -152,6 +163,17 @@ PanelWindow {
 
                 }
 
+            },
+            Transition {
+                from: "active"
+                to: ""
+                NumberAnimation {
+                    target: topRight
+                    property: "verticalSnap"
+                    to: 0
+                    duration: 300
+                    easing.type: Easing.OutQuad
+                }
             }
         ]
 
@@ -219,6 +241,17 @@ PanelWindow {
 
                 }
 
+            },
+            Transition {
+                from: "active"
+                to: ""
+                NumberAnimation {
+                    target: bottomLeft
+                    property: "verticalSnap"
+                    to: 0
+                    duration: 300
+                    easing.type: Easing.OutQuad
+                }
             }
         ]
 
@@ -286,6 +319,17 @@ PanelWindow {
 
                 }
 
+            },
+            Transition {
+                from: "active"
+                to: ""
+                NumberAnimation {
+                    target: bottomRight
+                    property: "verticalSnap"
+                    to: 0
+                    duration: 300
+                    easing.type: Easing.OutQuad
+                }
             }
         ]
 

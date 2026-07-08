@@ -113,7 +113,7 @@ Item {
 
             function changeWorkspace(id) {
                 if (id === focusedWorkspaceId) return
-                Hyprland.dispatch(`hl.dsp.focus({ workspace = ${id}})`);
+                Hyprland.dispatch(`workspace ${id}`);
             }
 
             function changeWorkspaceRelative(delta) {
@@ -124,7 +124,7 @@ Item {
                 
                 if (target === focusedWorkspaceId) return
                 
-                Hyprland.dispatch(`hl.dsp.focus({ workspace = ${target}})`);
+                Hyprland.dispatch(`workspace ${target}`);
             }
 
             function focusedWindowForWorkspace(workspaceId) {

@@ -45,7 +45,7 @@ PanelWindow {
         anchors.top: parent.top
         anchors.topMargin: barHeight * verticalSnap
         corner: RoundCorner.CornerEnum.TopLeft
-        color: context.colors.bg
+        color:  Qt.rgba(context.colors.bg.r, context.colors.bg.g, context.colors.bg.b, context.config.barOpacity)
         anchors.leftMargin: 0
         transitions: [
             Transition {
@@ -123,7 +123,7 @@ PanelWindow {
         anchors.top: parent.top
         anchors.topMargin: barHeight * verticalSnap
         corner: RoundCorner.CornerEnum.TopRight
-        color: context.colors.bg
+        color: Qt.rgba(context.colors.bg.r, context.colors.bg.g, context.colors.bg.b, context.config.barOpacity)
         anchors.rightMargin: 0
         transitions: [
             Transition {
@@ -201,7 +201,7 @@ PanelWindow {
         anchors.bottom: parent.bottom
         anchors.bottomMargin: barHeight * verticalSnap
         corner: RoundCorner.CornerEnum.BottomLeft
-        color: context.colors.bg
+        color: Qt.rgba(context.colors.bg.r, context.colors.bg.g, context.colors.bg.b, context.config.barOpacity)
         anchors.leftMargin: 0
         transitions: [
             Transition {
@@ -279,7 +279,7 @@ PanelWindow {
         anchors.bottom: parent.bottom
         anchors.bottomMargin: barHeight * verticalSnap
         corner: RoundCorner.CornerEnum.BottomRight
-        color: context.colors.bg
+        color: Qt.rgba(context.colors.bg.r, context.colors.bg.g, context.colors.bg.b, context.config.barOpacity)
         anchors.rightMargin: 0
         transitions: [
             Transition {

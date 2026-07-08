@@ -293,5 +293,58 @@ ColumnLayout {
         }
 
     }
+    SettingItem {
+    label: "Bar Opacity"
+    sublabel: "Adjust bar transparency"
+    icon: "󰆨"
+    colors: context.colors
+
+    RowLayout {
+        spacing: 12
+
+        Text {
+            text: Math.round(Config.barOpacity * 100) + "%"
+            font.pixelSize: 14
+            font.bold: true
+            color: colors.fg
+            Layout.preferredWidth: 40
+        }
+
+        Slider {
+            id: barOpacitySlider
+            Layout.fillWidth: true
+            from: 0.0
+            to: 1.0
+            stepSize: 0.01
+            value: Config.barOpacity
+            onMoved: Config.barOpacity = value
+
+            background: Rectangle {
+                x: parent.leftPadding
+                y: parent.topPadding + parent.availableHeight / 2 - height / 2
+                implicitWidth: 200
+                implicitHeight: 6
+                radius: 10
+                color: colors.surface
+
+                Rectangle {
+                    width: parent.width * barOpacitySlider.position
+                    height: parent.height
+                    radius: 10
+                    color: colors.accent 
+                }
+            }
+
+            handle: Rectangle {
+                x: parent.leftPadding + parent.availableWidth * parent.position - width / 2
+                y: parent.topPadding + parent.availableHeight / 2 - height / 2
+                implicitWidth: 20
+                implicitHeight: 20
+                radius: 10
+                color: colors.fg
+            }
+        }
+    }
+}
 
 }

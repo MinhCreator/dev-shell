@@ -33,7 +33,7 @@ Rectangle {
     property bool batteryReady: battery && battery.ready && battery.percentage !== undefined && battery.isPresent
 
     anchors.fill: parent
-    color: colors.bg
+    color: Qt.rgba(colors.bg.r, colors.bg.g, colors.bg.b, Config.barOpacity)
     radius: floating ? 12 : 0
     border.width: 0
 

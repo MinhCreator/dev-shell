@@ -149,10 +149,10 @@ ColumnLayout {
         colors: context.colors
         enabled: Config.use24HourFormat ? false : true
         TextField {
-            Layout.preferredWidth: 325
+                Layout.preferredWidth: 240
                 Layout.fillWidth: true
                 text: Config.clockFormat
-                font.pixelSize: 13
+                font.pixelSize: 14
                 color: colors.fg
                 horizontalAlignment: TextInput.AlignLeft
                 leftPadding: 12

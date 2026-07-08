@@ -85,7 +85,8 @@ ColumnLayout {
             }
 
             Text {
-                text: Qt.formatDate(new Date(), "ddd, MMM d")
+                enabled: false
+                text: Qt.formatDateTime(new Date(), Config.clockFormat)
                 color: theme.secondary
                 font.pixelSize: 12
             }

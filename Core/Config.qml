@@ -29,6 +29,7 @@ Singleton {
     property bool hideAppIcons: false
     property bool use24HourFormat: true
     property string clockFormat: ""
+    property real barOpacity: 1.0
 
     function save() {
         if (_loading)
@@ -54,6 +55,7 @@ Singleton {
         configAdapter.debug = root.debug;
         configAdapter.use24HourFormat = root.use24HourFormat;
         configAdapter.clockFormat = root.clockFormat;
+        configAdapter.barOpacity = root.barOpacity;
         configFile.writeAdapter();
         Logger.d("Config", "Settings saved to " + root.configPath);
     }
@@ -158,6 +160,11 @@ Singleton {
         if (!_loading)
             saveTimer.restart();
     }
+    onBarOpacityChanged: {
+    if (!_loading)
+        saveTimer.restart();
+    }
+
 
     FileView {
         id: configFile
@@ -249,6 +256,9 @@ Singleton {
                     root.openRgbDevices = flatList;
                     Logger.d("Config", "Loaded OpenRGB devices:", JSON.stringify(flatList));
                 }
+                if (configAdapter.barOpacity !== undefined)
+                    root.barOpacity = configAdapter.barOpacity;
+
                 Logger.i("Config", "Loaded from " + root.configPath);
             } catch (e) {
                 Logger.e("Config", "Failed to apply config: " + e);
@@ -279,6 +289,7 @@ Singleton {
             property bool hideAppIcons
             property bool use24HourFormat
             property string clockFormat
+            property real barOpacity
         }
 
     }

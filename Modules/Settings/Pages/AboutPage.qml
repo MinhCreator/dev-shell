@@ -251,14 +251,16 @@ ColumnLayout {
 
         Repeater {
             model: [{
-                "name": "MannuVilasara",
-                "url": "https://github.com/MannuVilasara",
-                "image": Quickshell.shellPath("Assets/mannu.png")
-            }, {
-                "name": "ikeshav26",
-                "url": "https://github.com/ikeshav26",
-                "image": Quickshell.shellPath("Assets/keshav.png")
-            }]
+                "name": "MinhCreatorVN",
+                "url": "https://github.com/MinhCreator",
+                "image": "https://avatars.githubusercontent.com/MinhCreator"
+            }
+            //, {
+            //     "name": "ikeshav26",
+            //     "url": "https://github.com/ikeshav26",
+            //     "image": Quickshell.shellPath("Assets/keshav.png")
+            // }
+            ]
 
             delegate: Rectangle {
                 id: devCard
@@ -293,7 +295,7 @@ ColumnLayout {
                             id: avatar
 
                             anchors.fill: parent
-                            source: "file://" + modelData.image
+                            source: modelData.image
                             sourceSize: Qt.size(58, 58)
                             fillMode: Image.PreserveAspectCrop
                             smooth: true

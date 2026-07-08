@@ -6,7 +6,7 @@ pragma Singleton
 Singleton {
     id: root
 
-    property string configPath: (Quickshell.env("XDG_CONFIG_HOME") || (Quickshell.env("HOME") + "/.config")) + "/xenon/config.json"
+    property string configPath: (Quickshell.env("XDG_CONFIG_HOME") || (Quickshell.env("HOME") + "/.config")) + "/dev-shell/config.json"
     property string fontFamily: "JetBrainsMono Nerd Font"
     property int fontSize: 14
     property string wallpaperDirectory: Quickshell.env("HOME") + "/Pictures/Wallpapers"
@@ -28,6 +28,7 @@ Singleton {
     property bool hideWorkspaceNumbers: false
     property bool hideAppIcons: false
     property bool use24HourFormat: true
+    property string clockFormat: ""
 
     function save() {
         if (_loading)
@@ -52,6 +53,7 @@ Singleton {
         configAdapter.lazyLoadLockScreen = root.lazyLoadLockScreen;
         configAdapter.debug = root.debug;
         configAdapter.use24HourFormat = root.use24HourFormat;
+        configAdapter.clockFormat = root.clockFormat;
         configFile.writeAdapter();
         Logger.d("Config", "Settings saved to " + root.configPath);
     }
@@ -152,6 +154,10 @@ Singleton {
             saveTimer.restart();
 
     }
+    onClockFormatChanged: {
+        if (!_loading)
+            saveTimer.restart();
+    }
 
     FileView {
         id: configFile
@@ -221,6 +227,9 @@ Singleton {
                 if (configAdapter.use24HourFormat !== undefined)
                     root.use24HourFormat = configAdapter.use24HourFormat;
 
+                if (configAdapter.clockFormat !== undefined)
+                    root.clockFormat = configAdapter.clockFormat;
+
                 if (configAdapter.openRgbDevices !== undefined) {
                     var dev = configAdapter.openRgbDevices;
                     var flatList = [];
@@ -269,6 +278,7 @@ Singleton {
             property bool hideWorkspaceNumbers
             property bool hideAppIcons
             property bool use24HourFormat
+            property string clockFormat
         }
 
     }

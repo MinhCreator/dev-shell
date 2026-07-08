@@ -4,13 +4,13 @@ import qs.Core
 pragma Singleton
 
 Singleton {
-    property string currentTime: Qt.formatDateTime(new Date(), Config.use24HourFormat ? "ddd, MMM dd - HH:mm" : "ddd, MMM dd - hh:mm AP")
+    property string currentTime: Qt.formatDateTime(new Date(), Config.use24HourFormat ? "ddd, MMM dd - HH:mm" : Config.clockFormat)
 
     Timer {
         interval: 1000
         running: true
         repeat: true
-        onTriggered: currentTime = Qt.formatDateTime(new Date(), Config.use24HourFormat ? "ddd, MMM dd - HH:mm" : "ddd, MMM dd - hh:mm AP")
+        onTriggered: currentTime = Qt.formatDateTime(new Date(), Config.use24HourFormat ? "ddd, MMM dd - HH:mm" : Config.clockFormat)
     }
 
 }

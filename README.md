@@ -31,18 +31,18 @@
 
 ### User Install
 ```bash
-git clone https://github.com/MannuVilasara/xenon-shell ~/.config/quickshell/xenon
+git clone https://github.com/MinhCreator/dev-shell ~/.config/quickshell/dev-shell
 ```
 
 ### System-wide Install
 ```bash
-sudo git clone https://github.com/MannuVilasara/xenon-shell /etc/xdg/quickshell/xenon
+sudo git clone https://github.com/MannuVilasara/dev-shell /etc/xdg/quickshell/dev-shell
 ```
 
 ## IPC Calls
 
 You can interact with the shell using `qs ipc` commands.
-Format: `qs -c xenon ipc call <target> <function>`
+Format: `qs -c dev-shell ipc call <target> <function>`
 
 ### Available Commands
 

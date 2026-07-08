@@ -353,12 +353,12 @@ Item {
 
                             Text {
                                 text: {
-                                    let d = new Date();
-                                    let h = d.getHours();
+                                    let date = new Date();
+                                    let hours = date.getHours();
                                     if (!Config.use24HourFormat)
-                                        h = h % 12 || 12;
+                                        hours = hours % 12 || 12;
 
-                                    return h.toString().padStart(2, '0');
+                                    return hours.toString().padStart(2, '0');
                                 }
                                 font.family: "StretchPro"
                                 font.pixelSize: 100

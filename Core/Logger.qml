@@ -7,8 +7,8 @@ Singleton {
     id: root
 
     function _formatMessage(level, color, ...args) {
-        var t = Qt.formatTime(new Date(), "hh:mm:ss.zzz");
-        var prefix = `\x1b[36m[${t}]\x1b[0m`;
+        var timeFormat = Qt.formatTime(new Date(), "hh:mm:ss.zzz");
+        var prefix = `\x1b[36m[${timeFormat}]\x1b[0m`;
         
         if (args.length > 1) {
             const maxLength = 14;

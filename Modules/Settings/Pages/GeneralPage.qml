@@ -143,6 +143,39 @@ ColumnLayout {
     }
 
     SettingItem {
+        label: "Time format"
+        sublabel: "Add the format for displaying time and date"
+        icon: "󰃰"
+        colors: context.colors
+        enabled: Config.use24HourFormat ? false : true
+        TextField {
+            Layout.preferredWidth: 325
+                Layout.fillWidth: true
+                text: Config.clockFormat
+                font.pixelSize: 13
+                color: colors.fg
+                horizontalAlignment: TextInput.AlignLeft
+                leftPadding: 12
+                rightPadding: 12
+                
+                background: Rectangle {
+                    color: parent.activeFocus ? colors.surface : colors.tile
+                    radius: 8
+                    border.width: 1
+                    border.color: parent.activeFocus ? colors.accent : colors.border
+                    
+                    Behavior on color { ColorAnimation { duration: 150 } }
+                    Behavior on border.color { ColorAnimation { duration: 150 } }
+                }
+                
+                onEditingFinished: {
+                    if (text !== "")
+                        Config.clockFormat = text;
+                }
+        }
+    }
+
+    SettingItem {
         label: "Time Zone"
         sublabel: "Choose the time zone for displaying time and date"
         icon: "󰃰"

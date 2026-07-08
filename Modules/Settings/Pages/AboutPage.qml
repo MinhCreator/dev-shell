@@ -178,14 +178,14 @@ ColumnLayout {
                 spacing: 6
 
                 Text {
-                    text: "Xenon Shell"
+                    text: "Dev Shell"
                     font.pixelSize: 28
                     font.weight: Font.Bold
                     color: colors.fg
                 }
 
                 Text {
-                    text: "Custom Quickshell config by Mannu"
+                    text: "Custom Quickshell config by Mannu( Modified by MinhCreatorVM)"
                     font.pixelSize: 14
                     color: Qt.rgba(colors.fg.r, colors.fg.g, colors.fg.b, 0.6)
                 }
@@ -200,20 +200,20 @@ ColumnLayout {
                     ActionPill {
                         icon: ""
                         label: "Repository"
-                        url: "https://github.com/MannuVilasara/xenon-shell"
+                        url: "https://github.com/MinhCreator/dev-shell"
                     }
 
                     ActionPill {
                         icon: ""
                         label: "Issues"
-                        url: "https://github.com/MannuVilasara/xenon-shell/issues"
+                        url: "https://github.com/MinhCreator/dev-shell/issues"
                     }
 
-                    ActionPill {
-                        icon: ""
-                        label: "Support"
-                        url: "https://discord.com/users/786926252811485186"
-                    }
+                    // ActionPill {
+                    //     icon: ""
+                    //     label: "Support"
+                    //     url: "https://discord.com/users/786926252811485186"
+                    // }
 
                 }
 

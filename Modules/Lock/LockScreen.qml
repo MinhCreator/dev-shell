@@ -39,7 +39,7 @@ WlSessionLockSurface {
                 "body": n.body || "",
                 "appName": n.appName || "",
                 "appIcon": n.appIcon || "",
-                "time": Qt.formatTime(new Date(), Config.use24HourFormat ? "HH:mm" : "hh:mm AP")
+                "time": Qt.formatTime(new Date(), Config.use24HourFormat ? "HH:mm" : Config.clockFormat)
             });
         }
     }

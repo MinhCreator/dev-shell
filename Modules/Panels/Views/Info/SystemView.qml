@@ -75,7 +75,7 @@ Item {
             }
 
             Text {
-                text: "SYSTEM TELEMETRY"
+                text: "SYSTEM MONITOR"
                 font.bold: true
                 font.pixelSize: 12
                 font.letterSpacing: 2

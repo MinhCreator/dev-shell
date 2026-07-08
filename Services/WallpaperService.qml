@@ -17,10 +17,10 @@ Singleton {
     property int scanningCount: 0
     readonly property bool scanning: (scanningCount > 0)
     property bool isInitialized: false
-    property string wallpaperCacheFile: Quickshell.env("HOME") + "/.cache/xenon/wallpapers.json"
-    property string colorsCacheFile: Quickshell.env("HOME") + "/.cache/xenon/colors.json"
+    property string wallpaperCacheFile: Quickshell.env("HOME") + "/.cache/dev-shell/wallpapers.json"
+    property string colorsCacheFile: Quickshell.env("HOME") + "/.cache/dev-shell/colors.json"
     property string defaultWallpaper: ""
-    property string previewDirectory: Quickshell.env("HOME") + "/.cache/xenon/wallpreviews_large"
+    property string previewDirectory: Quickshell.env("HOME") + "/.cache/dev-shell/wallpreviews_large"
     readonly property string systemDefaultWallpaper: Quickshell.shellDir + "/Assets/default_wallpaper.png"
     property var availableOpenRgbDevices: []
 
@@ -72,11 +72,11 @@ Singleton {
         saveTimer.restart();
         root.wallpaperChanged(screenName, path);
         Logger.d("Wallpaper", "Set wallpaper for", screenName, "to", path);
-        Ipc.copyWallpaper(path, Quickshell.env("HOME") + "/.cache/xenon/current_wallpaper");
+        Ipc.copyWallpaper(path, Quickshell.env("HOME") + "/.cache/dev-shell/current_wallpaper");
         generateColors(path);
     }
     readonly property string colorGenScript: Quickshell.shellDir + "/Scripts/template-processor.py"
-    readonly property string colorTemplate: Quickshell.shellDir + "/Assets/Templates/xenon_colors.json"
+    readonly property string colorTemplate: Quickshell.shellDir + "/Assets/Templates/dev_colors.json"
 
     function generateColors(path) {
         if (!path)
@@ -102,7 +102,7 @@ Singleton {
 
     function refreshWallpapersList() {
         Logger.d("Wallpaper", "Refreshing wallpapers list");
-        Ipc.generateThumbnails("/etc/xdg/quickshell/xenon/Scripts/generate_previews.py", root.defaultDirectory, root.previewDirectory);
+        Ipc.generateThumbnails("/etc/xdg/quickshell/dev-shell/Scripts/generate_previews.py", root.defaultDirectory, root.previewDirectory);
         scanningCount = 0;
         for (var i = 0; i < wallpaperScanners.count; i++) {
             var scanner = wallpaperScanners.objectAt(i);

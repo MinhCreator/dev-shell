@@ -30,7 +30,7 @@ Singleton {
     }
 
     function generateThumbnails(scriptPath, srcDir, destDir) {
-        thumbnailGenerator.command = ["python3", scriptPath, srcDir, destDir];
+        thumbnailGenerator.command = ["python", scriptPath, srcDir, destDir];
         thumbnailGenerator.running = true;
     }
 
@@ -69,7 +69,7 @@ Singleton {
     Process {
         id: dirCreator
 
-        command: ["mkdir", "-p", Quickshell.env("HOME") + "/.cache/xenon"]
+        command: ["mkdir", "-p", Quickshell.env("HOME") + "/.cache/dev-shell"]
         running: false
         onExited: (code, status) => {
             return root.dirCreationFinished(code);
@@ -138,7 +138,7 @@ Singleton {
     Process {
         id: powerMenuProc
 
-        command: ["quickshell", "ipc", "-c", "xenon", "call", "powermenu", "toggle"]
+        command: ["quickshell", "ipc", "-c", "dev-shell", "call", "powermenu", "toggle"]
         running: false
     }
 

@@ -18,8 +18,8 @@ Item {
     }
 
     function clearHistory() {
-        for (var i = 0; i < notifications.count; i++) {
-            var item = notifications.get(i);
+        for (var notificationItem = 0; notificationItem < notifications.count; notificationItem++) {
+            var item = notifications.get(notificationItem);
             if (item.ref)
                 item.ref.dismiss();
 
@@ -38,14 +38,14 @@ Item {
 
     function removeById(idToRemove) {
         Logger.d("NotifMan", "Removing notification with ID:", idToRemove);
-        for (var i = 0; i < activeNotifications.count; i++) {
-            if (activeNotifications.get(i).notifId === idToRemove) {
-                activeNotifications.remove(i);
+        for (var activeNotifi = 0; activeNotifi < activeNotifications.count; activeNotifi++) {
+            if (activeNotifications.get(activeNotifi).notifId === idToRemove) {
+                activeNotifications.remove(activeNotifi);
                 break;
             }
         }
-        for (var i = 0; i < notifications.count; i++) {
-            var item = notifications.get(i);
+        for (var notificationItems = 0; notificationItems < notifications.count; notificationItems++) {
+            var item = notifications.get(notificationItems);
             if (item.notifId === idToRemove) {
                 if (item.ref) {
                     try {
@@ -53,22 +53,22 @@ Item {
                     } catch (e) {
                     }
                 }
-                notifications.remove(i);
+                notifications.remove(notificationItems);
                 return ;
             }
         }
     }
 
     function removeSilent(idToRemove) {
-        for (var i = 0; i < activeNotifications.count; i++) {
-            if (activeNotifications.get(i).notifId === idToRemove) {
-                activeNotifications.remove(i);
+        for (var active = 0; active < activeNotifications.count; active++) {
+            if (activeNotifications.get(active).notifId === idToRemove) {
+                activeNotifications.remove(active);
                 break;
             }
         }
-        for (var i = 0; i < notifications.count; i++) {
-            if (notifications.get(i).notifId === idToRemove) {
-                notifications.remove(i);
+        for (var items = 0; items < notifications.count; items++) {
+            if (notifications.get(items).notifId === idToRemove) {
+                notifications.remove(items);
                 return ;
             }
         }
@@ -203,7 +203,7 @@ Item {
                 "image": (notification.image !== undefined) ? String(notification.image) : "",
                 "urgency": (notification.urgency !== undefined) ? Number(notification.urgency) : 0,
                 "actions": mappedActions,
-                "time": Qt.formatTime(new Date(), Config.use24HourFormat ? "HH:mm" : "hh:mm AP"),
+                "time": Qt.formatTime(new Date(), Config.use24HourFormat ? "HH:mm" : Config.clockFormat),
                 "expireTime": Date.now() + 5000
             };
             root.notifications.insert(0, entry);

@@ -30,6 +30,7 @@ Singleton {
     property bool use24HourFormat: true
     property string clockFormat: ""
     property real barOpacity: 1.0
+    property string avatarPath: ""
 
     function save() {
         if (_loading)
@@ -56,6 +57,7 @@ Singleton {
         configAdapter.use24HourFormat = root.use24HourFormat;
         configAdapter.clockFormat = root.clockFormat;
         configAdapter.barOpacity = root.barOpacity;
+        configAdapter.avatarPath = root.avatarPath;
         configFile.writeAdapter();
         Logger.d("Config", "Settings saved to " + root.configPath);
     }
@@ -161,8 +163,12 @@ Singleton {
             saveTimer.restart();
     }
     onBarOpacityChanged: {
-    if (!_loading)
-        saveTimer.restart();
+        if (!_loading)
+            saveTimer.restart();
+    }
+    onAvatarPathChanged: {
+        if (!_loading)
+            saveTimer.restart();
     }
 
 
@@ -259,6 +265,9 @@ Singleton {
                 if (configAdapter.barOpacity !== undefined)
                     root.barOpacity = configAdapter.barOpacity;
 
+                if (configAdapter.avatarPath !== undefined)
+                    root.avatarPath = configAdapter.avatarPath;
+
                 Logger.i("Config", "Loaded from " + root.configPath);
             } catch (e) {
                 Logger.e("Config", "Failed to apply config: " + e);
@@ -290,6 +299,7 @@ Singleton {
             property bool use24HourFormat
             property string clockFormat
             property real barOpacity
+            property string avatarPath
         }
 
     }

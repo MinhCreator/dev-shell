@@ -4,6 +4,10 @@ import QtQuick.Controls
 import QtQuick.Layouts
 import Quickshell
 import Quickshell.Wayland
+import Quickshell.Io
+import QtQuick.Effects
+import QtQuick.Dialogs
+import Qt5Compat.GraphicalEffects
 import qs.Core
 import qs.Services
 import qs.Widgets
@@ -17,6 +21,48 @@ FloatingWindow {
     property int windowHeight: 550
     property string activePage: "General"
     property bool sidebarCollapsed: false
+    property string username: "user"
+    property string searchText: ""
+    property var menuItems: [
+        { "label": "General",     "icon": "󰒓", "page": "General" },
+        { "label": "Bar",         "icon": "󰛡", "page": "Bar" },
+        { "label": "Background",  "icon": "󰸉", "page": "Background" },
+        { "label": "Lock Screen", "icon": "󰌾", "page": "LockScreen" },
+        { "label": "Interface",   "icon": "󰏇", "page": "Interface" },
+        { "label": "Services",    "icon": "󰒋", "page": "Services" },
+        { "label": "About",       "icon": "",   "page": "About", "imageSource": "../../Assets/logo.svg" },
+        { "label": "Update",      "icon": "󰛡", "page": "Update" }
+    ]
+    readonly property var filteredMenuItems: {
+        if (searchText === "") return menuItems;
+        var lower = searchText.toLowerCase();
+        return menuItems.filter(function(item) {
+            return item.label.toLowerCase().indexOf(lower) !== -1;
+        });
+    }
+
+    Process {
+        id: whoamiProc
+        command: ["whoami"]
+        running: true
+        stdout: SplitParser {
+                onRead: (data) => {
+                    if (data) root.username = data.trim();
+                }
+            }
+    }
+
+    FileDialog {
+        id: avatarFileDialog
+        title: "Choose Avatar Image"
+        nameFilters: ["Images (*.png *.jpg *.jpeg *.svg *.webp)"]
+        onAccepted: {
+            var path = selectedFile.toString();
+            if (path.startsWith("file://"))
+                path = path.substring(7);
+            Config.avatarPath = path;
+        }
+    }
 
     visible: context.appState.settingsOpen
     onVisibleChanged: {
@@ -40,6 +86,8 @@ FloatingWindow {
         RowLayout {
             anchors.fill: parent
             spacing: 0
+
+            
 
             Rectangle {
                 Layout.preferredWidth: sidebarCollapsed ? 80 : 240
@@ -80,97 +128,165 @@ FloatingWindow {
 
                     }
 
+                    // ── Avatar section ──
+                    RowLayout {
+                        Layout.fillWidth: true
+                        spacing: 12
+
+                        Item {
+                            Layout.preferredWidth: 56
+                            Layout.preferredHeight: 56
+
+                            Rectangle {
+                                anchors.fill: parent
+                                radius: 28
+                                color: Qt.rgba(colors.accent.r, colors.accent.g, colors.accent.b, 0.2)
+                                visible: Config.avatarPath === "" || avatarImage.status !== Image.Ready
+
+                                Text {
+                                    anchors.centerIn: parent
+                                    text: root.username.charAt(0).toUpperCase()
+                                    font.pixelSize: 24
+                                    font.bold: true
+                                    font.family: Config.fontFamily
+                                    color: colors.accent
+                                }
+                            }
+
+                            Image {
+                                id: avatarImage
+                                anchors.fill: parent
+                                source: Config.avatarPath !== "" ? (Config.avatarPath.startsWith("/") ? "file://" + Config.avatarPath : Config.avatarPath) : ""
+                                sourceSize: Qt.size(56, 56)
+                                fillMode: Image.PreserveAspectCrop
+                                smooth: true
+                                visible: false
+                            }
+
+                            OpacityMask {
+                                anchors.fill: parent
+                                source: avatarImage
+                                visible: avatarImage.status === Image.Ready
+                                maskSource: Rectangle {
+                                    width: 56
+                                    height: 56
+                                    radius: 28
+                                }
+                            }
+
+                            TapHandler {
+                                onTapped: avatarFileDialog.open()
+                                cursorShape: Qt.PointingHandCursor
+                            }
+                        }
+
+                        ColumnLayout {
+                            spacing: 2
+                            visible: !sidebarCollapsed
+
+                            Text {
+                                text: root.username
+                                font.pixelSize: 14
+                                font.bold: true
+                                font.family: Config.fontFamily
+                                color: colors.fg
+                            }
+                            Text {
+                                text: "coding"
+                                font.pixelSize: 12
+                                font.family: Config.fontFamily
+                                color: Qt.rgba(colors.fg.r, colors.fg.g, colors.fg.b, 0.5)
+                            }
+                        }
+                    }
+
+                    // ── Search bar ──
+                    Rectangle {
+                        Layout.fillWidth: true
+                        Layout.preferredHeight: 40
+                        radius: 10
+                        color: "transparent"
+                        border.width: searchInput.activeFocus ? 2 : 1
+                        border.color: searchInput.activeFocus ? colors.accent : Qt.rgba(colors.border.r, colors.border.g, colors.border.b, 0.3)
+
+                        RowLayout {
+                            anchors.fill: parent
+                            anchors.leftMargin: 12
+                            anchors.rightMargin: 12
+                            spacing: 8
+
+                            Text {
+                                text: ""
+                                font.family: "Symbols Nerd Font"
+                                font.pixelSize: 16
+                                color: colors.muted
+                            }
+
+                            TextField {
+                                id: searchInput
+                                Layout.fillWidth: true
+                                placeholderText: "Search..."
+                                font.family: Config.fontFamily
+                                font.pixelSize: 13
+                                color: colors.fg
+                                background: Item {}
+                                leftPadding: 0
+                                rightPadding: 0
+                                onTextChanged: root.searchText = text
+                            }
+                        }
+                    }
+
+                    // ── Config file button ──
                     Rectangle {
                         Layout.fillWidth: true
                         Layout.preferredHeight: 48
                         radius: 24
                         color: colors.accent
+                        visible: !sidebarCollapsed
 
                         RowLayout {
                             anchors.centerIn: parent
-                            spacing: sidebarCollapsed ? 0 : 12
-
+                            spacing: 12
                             Text {
                                 text: "󰐏"
                                 font.family: "Symbols Nerd Font"
                                 font.pixelSize: 18
                                 color: colors.bg
                             }
-
                             Text {
                                 text: "Config file"
                                 color: colors.bg
                                 font.pixelSize: 14
                                 font.bold: true
-                                visible: !sidebarCollapsed
-                                opacity: sidebarCollapsed ? 0 : 1
                             }
-
                         }
-
                         TapHandler {
                             onTapped: Qt.openUrlExternally("file://" + Config.configPath)
                             cursorShape: Qt.PointingHandCursor
                         }
-
                     }
 
+                    // ── Spacer ──
                     Item {
-                        height: 12
+                        height: 8
                         width: 1
                     }
 
-                    SidebarItem {
-                        label: "General"
-                        icon: "󰒓"
-                        page: "General"
-                    }
+                    // ── Filtered menu items ──
+                    Repeater {
+                        model: root.filteredMenuItems
 
-                    SidebarItem {
-                        label: "Bar"
-                        icon: "󰛡"
-                        page: "Bar"
-                    }
-
-                    SidebarItem {
-                        label: "Background"
-                        icon: "󰸉"
-                        page: "Background"
-                    }
-
-                    SidebarItem {
-                        label: "Lock Screen"
-                        icon: "󰌾"
-                        page: "LockScreen"
-                    }
-
-                    SidebarItem {
-                        label: "Interface"
-                        icon: "󰏇"
-                        page: "Interface"
-                    }
-
-                    SidebarItem {
-                        label: "Services"
-                        icon: "󰒋"
-                        page: "Services"
-                    }
-
-                    SidebarItem {
-                        label: "About"
-                        // icon: Icons.arch
-                        imageSource: "../../Assets/logo.svg"
-                        page: "About"
+                        SidebarItem {
+                            label: modelData.label
+                            icon: modelData.icon || ""
+                            imageSource: modelData.imageSource || ""
+                            page: modelData.page
+                        }
                     }
 
                     Item {
                         Layout.fillHeight: true
-                    }
-
-                   SidebarItem {
-                        label: "Update"
-                        icon: "󰛡"
-                        page: "Update"
                     }
 
                     component SidebarItem: Rectangle {
@@ -179,10 +295,13 @@ FloatingWindow {
                         property string imageSource: ""
                         property string page
                         property bool isActive: root.activePage === page
+                        property bool isVisible: true
                         property color inactiveColor: Qt.rgba(colors.fg.r, colors.fg.g, colors.fg.b, 0.5)
 
                         Layout.fillWidth: true
-                        Layout.preferredHeight: 44
+                        Layout.preferredHeight: isVisible ? 44 : 0
+                        visible: isVisible
+                        opacity: isVisible ? 1 : 0
                         radius: 12
                         color: isActive ? Qt.rgba(colors.surface.r, colors.surface.g, colors.surface.b, 0.8) : "transparent"
 
@@ -260,6 +379,7 @@ FloatingWindow {
 
             }
 
+
             Rectangle {
                 Layout.fillWidth: true
                 Layout.fillHeight: true
@@ -295,6 +415,8 @@ FloatingWindow {
                     }
 
                 }
+
+                
 
                 ScrollView {
                     anchors.fill: parent

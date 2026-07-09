@@ -1,4 +1,5 @@
 import "." as Views
+import Qt5Compat.GraphicalEffects
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
@@ -29,45 +30,51 @@ ColumnLayout {
         Layout.bottomMargin: 4
         spacing: 12
 
-        Rectangle {
+        Item {
             Layout.preferredWidth: 42
             Layout.preferredHeight: 42
-            radius: 14
-            color: "transparent"
-            clip: true
-            visible: true
 
             Image {
+                id: avatarImg
                 anchors.fill: parent
-                source: "file://" + Quickshell.env("HOME") + "/.face"
+                source: {
+                    if (Config.avatarPath !== "") {
+                        return Config.avatarPath.startsWith("/") ? "file://" + Config.avatarPath : Config.avatarPath;
+                    }
+                    return "file://" + Quickshell.env("HOME") + "/.face";
+                }
                 fillMode: Image.PreserveAspectCrop
-                onStatusChanged: {
-                    if (status === Image.Error)
-                        source = "../../Assets/arch.svg";
+                visible: false
+            }
 
+            OpacityMask {
+                anchors.fill: parent
+                source: avatarImg
+                visible: avatarImg.status === Image.Ready
+                maskSource: Rectangle {
+                    width: 42
+                    height: 42
+                    radius: 21
                 }
             }
 
-            Text {
-                anchors.centerIn: parent
-                text: Icons.arch
-                font.pixelSize: 24
-                font.family: "Symbols Nerd Font"
-                color: theme.bg
-                visible: parent.children[0].status !== Image.Ready
+            Image {
+                id: fallbackImg
+                anchors.fill: parent
+                source: "../../Assets/arch.svg"
+                fillMode: Image.PreserveAspectCrop
+                visible: false
             }
 
-            gradient: Gradient {
-                GradientStop {
-                    position: 0
-                    color: theme.tileActive
+            OpacityMask {
+                anchors.fill: parent
+                source: fallbackImg
+                visible: avatarImg.status !== Image.Ready
+                maskSource: Rectangle {
+                    width: 42
+                    height: 42
+                    radius: 21
                 }
-
-                GradientStop {
-                    position: 1
-                    color: theme.accentActive
-                }
-
             }
 
         }
@@ -85,7 +92,6 @@ ColumnLayout {
             }
 
             Text {
-                enabled: false
                 text: Qt.formatDateTime(new Date(), Config.clockFormat)
                 color: theme.secondary
                 font.pixelSize: 12

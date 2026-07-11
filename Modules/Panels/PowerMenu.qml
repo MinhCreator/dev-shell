@@ -45,7 +45,8 @@ PanelWindow {
     }, {
         "name": "Log Out",
         "icon": Icons.logout,
-        "command": "loginctl terminate-user " + Quickshell.env("USER"),
+        // "command": "loginctl terminate-user " + Quickshell.env("USER"),
+        "command": "hyprctl dispatch exit",
         "shortcut": "X"
     }]
 

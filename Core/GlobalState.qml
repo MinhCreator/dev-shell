@@ -69,7 +69,7 @@ QtObject {
         }
     }
 
-    function toggleInfoPanel() {
+    function toggleInforPanel() {
         if (infoPanelOpen) {
             infoPanelOpen = false;
         } else {

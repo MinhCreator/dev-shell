@@ -123,10 +123,10 @@ Item {
 
     IpcHandler {
         function toggle() {
-            root.context.appState.toggleInfoPanel();
+            root.context.appState.toggleInforPanel();
         }
 
-        target: "infopanel"
+        target: "inforpanel"
     }
 
     IpcHandler {

@@ -36,7 +36,7 @@ git clone https://github.com/MinhCreator/dev-shell ~/.config/quickshell/dev-shel
 
 ### System-wide Install
 ```bash
-sudo git clone https://github.com/MannuVilasara/dev-shell /etc/xdg/quickshell/dev-shell
+sudo git clone https://github.com/MinhCreator/dev-shell /etc/xdg/quickshell/dev-shell
 ```
 
 ## IPC Calls
@@ -54,6 +54,10 @@ ipc call clipboard toggle
 ipc call sidePanel open
 ipc call sidePanel close
 ipc call sidePanel toggle
+
+ipc call overview open
+ipc call overview close
+ipc call overview toggle
 
 ipc call wallpaperpanel toggle
 

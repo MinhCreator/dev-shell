@@ -55,6 +55,7 @@ Rectangle {
             fontFamily: barRoot.fontFamily
             fontSize: barRoot.fontSize
             compositor: barRoot.compositor
+            globalState: barRoot.globalState
         }
 
         VerticalDivider {

@@ -11,6 +11,8 @@ QtObject {
     property bool infoPanelOpen: false
     property bool settingsOpen: false
     property bool isLocked: false
+    property bool overviewOpen: false
+    property bool superReleaseMightTrigger: true
 
     signal requestSidePanelMenu(string menu)
     signal requestInfoPanelTab(int tabIndex)
@@ -78,6 +80,23 @@ QtObject {
         }
     }
 
+    function toggleOverview() {
+        if (overviewOpen) {
+            overviewOpen = false;
+        } else {
+            closeAll();
+            overviewOpen = true;
+        }
+    }
+
+    function toggleOverviewClose() {
+        overviewOpen = false;
+    }
+
+    function toggleOverviewOpen() {
+        overviewOpen = true;
+    }
+
     function closeAll() {
         launcherOpen = false;
         clipboardOpen = false;
@@ -86,6 +105,7 @@ QtObject {
         powerMenuOpen = false;
         infoPanelOpen = false;
         settingsOpen = false;
+        overviewOpen = false
     }
 
 }

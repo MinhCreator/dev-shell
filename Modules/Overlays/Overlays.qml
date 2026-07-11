@@ -6,7 +6,9 @@ import qs.Modules.Clipboard
 import qs.Modules.Launcher
 import qs.Modules.Notifications
 import qs.Modules.Panels
+import qs.Modules.overview
 import qs.Services
+import Quickshell.Hyprland
 
 Item {
     id: root
@@ -68,6 +70,19 @@ Item {
 
         globalState: root.context.appState
         colors: root.context.colors
+    }
+
+    Connections {
+        target: Quickshell
+
+        function onReloadCompleted() {
+            Quickshell.inhibitReloadPopup();
+        }
+    }
+
+    Overview {
+        id: overview
+        globalStates: root.context.appState
     }
 
     IpcHandler {
@@ -135,6 +150,21 @@ Item {
         }
 
         target: "settings"
+    }
+
+    IpcHandler {
+        target: "overview" 
+        function toggle() {
+            root.context.appState.toggleOverview()
+        }
+        
+        function close() {
+            root.context.appState.toggleOverviewClose()
+        }
+        function open() {
+             root.context.appState.toggleOverviewOpen()
+        }
+
     }
 
     IpcHandler {

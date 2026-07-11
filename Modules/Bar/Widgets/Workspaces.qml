@@ -13,6 +13,7 @@ Rectangle {
     required property var colors
     required property string fontFamily
     required property int fontSize
+    required property var globalState
     property var compositor: null
     property bool isNiri: compositor.detectedCompositor === "niri"
     property int activeWs: compositor.activeWorkspace
@@ -278,7 +279,15 @@ Rectangle {
                         MouseArea {
                             anchors.fill: parent
                             cursorShape: Qt.PointingHandCursor
-                            onClicked: changeWorkspace(wsId)
+                            acceptedButtons: Qt.LeftButton | Qt.RightButton 
+                            onClicked: (mouse) => {
+                                if (mouse.button === Qt.LeftButton) {
+                                    changeWorkspace(wsId)
+                                } 
+                                else if (mouse.button === Qt.RightButton) {
+                                    globalState.toggleOverview()
+                                }
+                            }
                         }
 
                     }

@@ -29,7 +29,8 @@ Singleton {
         clockFormat: "",
         barOpacity: 1.0,
         avatarPath: "",
-        corner: true
+        corner: true,
+        timeZone: ""
     })
 
     property string fontFamily: defaults.fontFamily
@@ -55,6 +56,7 @@ Singleton {
     property real barOpacity: defaults.barOpacity
     property string avatarPath: defaults.avatarPath
     property bool corner: defaults.corner
+    property string timeZone: defaults.timeZone
 
     readonly property string configPath: (Quickshell.env("XDG_CONFIG_HOME") || (Quickshell.env("HOME") + "/.config")) + "/dev-shell/config.json"
 
@@ -88,6 +90,7 @@ Singleton {
             root.barOpacity = s.barOpacity !== undefined ? s.barOpacity : defaults.barOpacity
             root.avatarPath = s.avatarPath !== undefined ? s.avatarPath : defaults.avatarPath
             root.corner = s.corner !== undefined ? s.corner : defaults.corner
+            root.timeZone = s.timeZone !== undefined ? s.timeZone : defaults.timeZone
             
             Logger.i("Config", "Loaded settings from", configPath)
         }
@@ -120,6 +123,7 @@ Singleton {
             property string clockFormat: ""
             property real barOpacity: 1.0
             property string avatarPath: ""
+            property string timeZone: ""
             property bool corner: true
         }
     }
@@ -152,6 +156,7 @@ Singleton {
             configAdapter.barOpacity = root.barOpacity
             configAdapter.avatarPath = root.avatarPath
             configAdapter.corner = root.corner
+            configAdapter.timeZone = root.timeZone
             configFile.writeAdapter()
         }
     }
@@ -179,6 +184,7 @@ Singleton {
     onBarOpacityChanged: save()
     onAvatarPathChanged: save()
     onCornerChanged: save()
+    onTimeZoneChanged: save()
     Component.onCompleted: load()
 
     function save() {
@@ -213,6 +219,7 @@ Singleton {
         barOpacity = defaults.barOpacity
         avatarPath = defaults.avatarPath
         corner = defaults.corner
+        timeZone = defaults.timeZone
         Logger.i("Config", "Settings reset to defaults")
     }
 
@@ -240,7 +247,8 @@ Singleton {
             clockFormat: clockFormat,
             barOpacity: barOpacity,
             avatarPath: avatarPath,
-            corner: corner
+            corner: corner,
+            timeZone: timeZone
         }
         exportProc.settingsJson = JSON.stringify(settings, null, 2)
         exportProc.filePath = filePath
@@ -290,6 +298,7 @@ Singleton {
                     if (settings.barOpacity !== undefined) barOpacity = settings.barOpacity
                     if (settings.avatarPath !== undefined) avatarPath = settings.avatarPath
                     if (settings.corner !== undefined) corner = settings.corner
+                    if (settings.timeZone !== undefined) timeZone = settings.timeZone
                     Logger.i("Config", "Settings imported successfully")
                 } catch (e) {
                     Logger.e("Config", "Import failed: " + e)

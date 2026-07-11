@@ -18,33 +18,230 @@ ColumnLayout {
        showDivider: false
     }
 
+    // No longer used
+    // SettingItem {
+    //     label: "Font Family"
+    //     sublabel: "Global font family"
+    //     icon: "󰛖"
+    //     colors: context.colors
 
+    //     TextField {
+    //         Layout.preferredWidth: 250
+    //         Layout.fillWidth: true
+    //         clip: true
+    //         text: Config.fontFamily
+    //         font.family: Config.fontFamily
+    //         font.pixelSize: 14
+    //         color: colors.fg
+    //         horizontalAlignment: TextInput.AlignRight
+    //         onEditingFinished: {
+    //             if (text !== "")
+    //                 Config.fontFamily = text;
+
+    //         }
+
+    //         background: Rectangle {
+    //             color: parent.activeFocus ? Qt.rgba(0, 0, 0, 0.2) : "transparent"
+    //             radius: 6
+    //             border.width: parent.activeFocus ? 1 : 0
+    //             border.color: colors.accent
+    //         }
+
+    //     }
+
+    // }
+    
     SettingItem {
         label: "Font Family"
-        sublabel: "Global font family"
+        // sublabel: "Choose the time zone for displaying time and date"
+        // sublabel: context.timezone.currentSystemZone !== "" ? context.timezone.currentSystemZone : "Detecting time zone..."
+        sublabel: "font family: " + context.font.currentFont.split(",")[0] 
         icon: "󰛖"
         colors: context.colors
 
-        TextField {
-            Layout.preferredWidth: 250
+        ComboBox {
+            id: fontFamilies
+
+            property var filteredFontFamily: {
+                if (!context.font.fontList)
+                    return [];
+
+                if (fontSearchField.text === "")
+                    // fontSearchField.text = Config.timeZone;
+                    return context.font.fontList;
+
+                var searchText = fontSearchField.text.toLowerCase();
+                return context.font.fontList.filter(function(fl) {
+                    return fl.toLowerCase().indexOf(searchText) !== -1;
+                });
+            }
+
+            Layout.preferredWidth: 240
             Layout.fillWidth: true
-            clip: true
-            text: Config.fontFamily
+            model: filteredFontFamily
+            currentIndex: {
+                if (context.font.currentFont === "" || count === 0)
+                    return -1;
+
+                return filteredFontFamily.indexOf(context.font.currentFont);
+            }
             font.family: Config.fontFamily
             font.pixelSize: 14
-            color: colors.fg
-            horizontalAlignment: TextInput.AlignRight
-            onEditingFinished: {
-                if (text !== "")
-                    Config.fontFamily = text;
+            onActivated: {
+                var selected = filteredFontFamily[currentIndex];
+                if (selected && selected !== context.font.currentFont)
+                    context.font.setFont(selected);
 
             }
 
+            contentItem: Text {
+                leftPadding: 12
+                rightPadding: fontFamilies.indicator.width + fontFamilies.spacing
+                // text: fontFamilies.displayText !== "" ? fontFamilies.displayText : (context.timezone.timeZones.length === 0 ? "Loading..." : "Select Timezone")
+                // text: fontFamilies.displayText !== context.timezone.currentSystemZone ? fontFamilies.displayText : (context.timezone.currentSystemZone !== "" ? context.timezone.currentSystemZone : (context.timezone.timeZones.length === 0 ? "Loading..." : "Select Timezone"))
+                text : {
+                    if (fontFamilies.displayText != "" && fontFamilies.displayText != context.font.currentFont){
+                        fontFamilies.displayText = context.font.currentFont;
+                    } else if (context.font.currentFont !== ""){
+                        fontFamilies.displayText = context.font.currentFont;
+                    } else if (context.font.fontList.length === 0){
+                        fontFamilies.displayText = "Loading..."; 
+                    } else 
+                        fontFamilies.displayText = "Select font family";
+                }       
+                font: fontFamilies.font
+                color: colors.fg
+                verticalAlignment: Text.AlignVCenter
+                elide: Text.ElideRight
+            }
+
             background: Rectangle {
-                color: parent.activeFocus ? Qt.rgba(0, 0, 0, 0.2) : "transparent"
-                radius: 6
-                border.width: parent.activeFocus ? 1 : 0
-                border.color: colors.accent
+                implicitWidth: context.font.currentFont.length
+                implicitHeight: 36
+                color: fontFamilies.pressed ? Qt.rgba(0, 0, 0, 0.3) : Qt.rgba(0, 0, 0, 0.2)
+                border.color: fontFamilies.activeFocus ? colors.accent : colors.border
+                border.width: fontFamilies.activeFocus ? 2 : 1
+                radius: 8
+            }
+
+            indicator: Text {
+                x: fontFamilies.width - width - 12
+                y: fontFamilies.topPadding + (fontFamilies.availableHeight - height) / 2
+                text: "󰅀"
+                font.family: "Symbols Nerd Font"
+                font.pixelSize: 16
+                color: colors.fg
+            }
+
+            popup: Popup {
+                y: fontFamilies.height + 4
+                width: fontFamilies.width
+                height: Math.min(fontFamilies.model.length * 36 + 70, 340)
+                padding: 8
+                onOpened: {
+                    fontSearchField.text = "";
+                    fontSearchField.forceActiveFocus();
+                }
+
+                contentItem: ColumnLayout {
+                    spacing: 8
+
+                    TextField {
+                        id: fontSearchField
+
+                        Layout.fillWidth: true
+                        Layout.preferredHeight: 36
+                        placeholderText: "Search font family..."
+                        font.family: Config.fontFamily
+                        font.pixelSize: 14
+                        color: colors.fg
+                        leftPadding: 36
+
+                        Text {
+                            anchors.left: parent.left
+                            anchors.leftMargin: 10
+                            anchors.verticalCenter: parent.verticalCenter
+                            text: ""
+                            font.family: "Symbols Nerd Font"
+                            font.pixelSize: 16
+                            color: colors.fg
+                            opacity: 0.5
+                        }
+
+                        background: Rectangle {
+                            color: Qt.rgba(0, 0, 0, 0.2)
+                            border.color: fontSearchField.activeFocus ? colors.accent : colors.border
+                            border.width: fontSearchField.activeFocus ? 2 : 1
+                            radius: 6
+                        }
+
+                    }
+
+                    ListView {
+                        id: fontList
+
+                        Layout.fillWidth: true
+                        Layout.fillHeight: true
+                        clip: true
+                        model: fontFamilies.popup.visible ? fontFamilies.delegateModel : null
+                        currentIndex: fontFamilies.highlightedIndex
+
+                        Text {
+                            anchors.centerIn: parent
+                            visible: fontList.count === 0 && fontSearchField.text !== ""
+                            text: "No font family found"
+                            font.family: Config.fontFamily
+                            font.pixelSize: 14
+                            color: colors.fg
+                            opacity: 0.5
+                        }
+
+                        ScrollBar.vertical: ScrollBar {
+                            active: true
+                            policy: ScrollBar.AsNeeded
+                            width: 6
+
+                            contentItem: Rectangle {
+                                implicitWidth: 6
+                                radius: 3
+                                color: colors.accent
+                                opacity: 0.5
+                            }
+
+                        }
+
+                    }
+
+                }
+
+                background: Rectangle {
+                    color: colors.surface
+                    border.color: colors.border
+                    border.width: 1
+                    radius: 8
+                }
+
+            }
+
+            delegate: ItemDelegate {
+                width: fontFamilies.width - 24
+                implicitHeight: 36
+                highlighted: fontFamilies.highlightedIndex === index
+
+                contentItem: Text {
+                    text: modelData
+                    font: fontFamilies.font
+                    color: colors.fg
+                    elide: Text.ElideRight
+                    verticalAlignment: Text.AlignVCenter
+                    leftPadding: 12
+                }
+
+                background: Rectangle {
+                    color: parent.highlighted ? colors.tile : "transparent"
+                    radius: 6
+                }
+
             }
 
         }
@@ -176,7 +373,9 @@ ColumnLayout {
 
     SettingItem {
         label: "Time Zone"
-        sublabel: "Choose the time zone for displaying time and date"
+        // sublabel: "Choose the time zone for displaying time and date"
+        // sublabel: context.timezone.currentSystemZone !== "" ? context.timezone.currentSystemZone : "Detecting time zone..."
+        sublabel: Config.timeZone !== "" ? Config.timeZone : "Detecting time zone..."
         icon: "󰃰"
         colors: context.colors
 
@@ -187,7 +386,8 @@ ColumnLayout {
                 if (!context.timezone.timeZones)
                     return [];
 
-                if (searchField.text === "")
+                if (fontSearchField.text === "")
+                    // searchField.text = Config.timeZone;
                     return context.timezone.timeZones;
 
                 var searchText = searchField.text.toLowerCase();
@@ -217,7 +417,18 @@ ColumnLayout {
             contentItem: Text {
                 leftPadding: 12
                 rightPadding: tzCombo.indicator.width + tzCombo.spacing
-                text: tzCombo.displayText !== "" ? tzCombo.displayText : (context.timezone.timeZones.length === 0 ? "Loading..." : "Select Timezone")
+                // text: tzCombo.displayText !== "" ? tzCombo.displayText : (context.timezone.timeZones.length === 0 ? "Loading..." : "Select Timezone")
+                // text: tzCombo.displayText !== context.timezone.currentSystemZone ? tzCombo.displayText : (context.timezone.currentSystemZone !== "" ? context.timezone.currentSystemZone : (context.timezone.timeZones.length === 0 ? "Loading..." : "Select Timezone"))
+                text : {
+                    if (tzCombo.displayText != "" && tzCombo.displayText != context.timezone.currentSystemZone){
+                        tzCombo.displayText = context.timezone.currentSystemZone;
+                    } else if (context.timezone.timeZones !== ""){
+                        tzCombo.displayText = context.timezone.currentSystemZone;
+                    } else if (context.timezone.timeZones.length === 0){
+                        tzCombo.displayText = "Loading..."; 
+                    } else 
+                        tzCombo.displayText = "Select Timezone";
+                }       
                 font: tzCombo.font
                 color: colors.fg
                 verticalAlignment: Text.AlignVCenter

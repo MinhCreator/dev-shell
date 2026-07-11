@@ -14,6 +14,7 @@ Item {
     property var disk: DiskService
     property var time: TimeService
     property var timezone: TimeZone
+    property var font: FontService
     property var volume: VolumeService
     property alias activeWindow: compositorService
     property alias layout: compositorService

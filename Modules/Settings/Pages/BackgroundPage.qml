@@ -14,13 +14,10 @@ ColumnLayout {
 
     spacing: 16
 
-    Text {
-        text: "Background"
-        font.family: Config.fontFamily
-        font.pixelSize: 24
-        font.bold: true
-        color: colors.fg
-        Layout.bottomMargin: 8
+    SectionHeader {
+       title: "Background" 
+       fontSize: Config.fontFamily * 2
+       showDivider: false
     }
 
     // Current Wallpaper Preview - Scalable and Flexible

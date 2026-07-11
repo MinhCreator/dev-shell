@@ -20,7 +20,7 @@ PanelWindow {
     required property Colors colors
     property alias theme: theme
     readonly property int peekWidth: 10
-    readonly property int boxWidth: 380
+    readonly property int boxWidth: 355
     property bool forcedOpen: false
     property bool controlOpen: false
     property bool notifOpen: false

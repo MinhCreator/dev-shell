@@ -12,13 +12,12 @@ ColumnLayout {
 
     spacing: 16
 
-    Text {
-        text: "General"
-        font.family: Config.fontFamily
-        font.pixelSize: 20
-        font.bold: true
-        color: colors.fg
+    SectionHeader {
+       title: "General" 
+       fontSize: Config.fontFamily * 2
+       showDivider: false
     }
+
 
     SettingItem {
         label: "Font Family"

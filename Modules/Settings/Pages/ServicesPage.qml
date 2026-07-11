@@ -12,12 +12,10 @@ ColumnLayout {
 
     spacing: 16
 
-    Text {
-        text: "Services"
-        font.family: Config.fontFamily
-        font.pixelSize: 20
-        font.bold: true
-        color: colors.fg
+    SectionHeader {
+       title: "Services" 
+       fontSize: Config.fontFamily * 2
+       showDivider: false
     }
 
     ToggleButton {

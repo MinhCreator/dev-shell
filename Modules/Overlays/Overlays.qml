@@ -75,7 +75,8 @@ Item {
     Connections {
         target: Quickshell
 
-        function onReloadCompleted() {
+        function onReloadCompleted()
+        {
             Quickshell.inhibitReloadPopup();
         }
     }
@@ -86,7 +87,8 @@ Item {
     }
 
     IpcHandler {
-        function toggle() {
+        function toggle()
+        {
             root.context.appState.toggleLauncher();
         }
 
@@ -94,7 +96,8 @@ Item {
     }
 
     IpcHandler {
-        function toggle() {
+        function toggle()
+        {
             root.context.appState.toggleClipboard();
         }
 
@@ -102,85 +105,98 @@ Item {
     }
 
     IpcHandler {
-        function open() {
+        function open()
+        {
             sidePanel.show();
         }
 
-        function close() {
+        function close()
+        {
             sidePanel.hide();
         }
 
-        function toggle() {
+        function toggle()
+        {
             if (sidePanel.anyOpen)
                 sidePanel.hide();
             else
                 sidePanel.show();
+            }
+
+            target: "sidePanel"
         }
 
-        target: "sidePanel"
-    }
+        IpcHandler {
+            function toggle()
+            {
+                root.context.appState.toggleWallpaperPanel();
+            }
 
-    IpcHandler {
-        function toggle() {
-            root.context.appState.toggleWallpaperPanel();
+            target: "wallpaperpanel"
         }
 
-        target: "wallpaperpanel"
-    }
+        IpcHandler {
+            function toggle()
+            {
+                root.context.appState.togglePowerMenu();
+            }
 
-    IpcHandler {
-        function toggle() {
-            root.context.appState.togglePowerMenu();
+            target: "powermenu"
         }
 
-        target: "powermenu"
-    }
+        IpcHandler {
+            function toggle()
+            {
+                root.context.appState.toggleInforPanel();
+            }
 
-    IpcHandler {
-        function toggle() {
-            root.context.appState.toggleInforPanel();
+            target: "inforpanel"
         }
 
-        target: "inforpanel"
-    }
+        IpcHandler {
+            function toggle()
+            {
+                root.context.appState.toggleSettings();
+            }
 
-    IpcHandler {
-        function toggle() {
-            root.context.appState.toggleSettings();
+            target: "settings"
         }
 
-        target: "settings"
-    }
+        IpcHandler {
+            target: "overview"
+            function toggle()
+            {
+                root.context.appState.toggleOverview()
+            }
 
-    IpcHandler {
-        target: "overview" 
-        function toggle() {
-            root.context.appState.toggleOverview()
+            function close()
+            {
+                root.context.appState.toggleOverviewClose()
+            }
+            function open()
+            {
+                root.context.appState.toggleOverviewOpen()
+            }
+
         }
+
+        IpcHandler {
+            function update()
+            {
+                clipboard.refresh();
+            }
+
+            target: "cliphistService"
+        }
+
+        IpcHandler {
+            function set(path: string)
+            {
+                WallpaperService.changeWallpaper(path, undefined);
+            }
+
+            target: "wallpaper"
+        }
+
         
-        function close() {
-            root.context.appState.toggleOverviewClose()
-        }
-        function open() {
-             root.context.appState.toggleOverviewOpen()
-        }
-
     }
-
-    IpcHandler {
-        function update() {
-            clipboard.refresh();
-        }
-
-        target: "cliphistService"
-    }
-
-    IpcHandler {
-        function set(path: string) {
-            WallpaperService.changeWallpaper(path, undefined);
-        }
-
-        target: "wallpaper"
-    }
-
-}

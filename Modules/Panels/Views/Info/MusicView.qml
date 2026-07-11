@@ -18,8 +18,8 @@ Item {
         return m + ":" + (s < 10 ? "0" : "") + s;
     }
 
-    implicitWidth: 400
-    implicitHeight: MprisService.playerCount > 0 ? 480 : 300
+    implicitWidth: 430
+    implicitHeight: MprisService.playerCount > 0 ? 430 : 300
     width: implicitWidth
     height: implicitHeight
 

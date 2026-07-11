@@ -28,7 +28,8 @@ Singleton {
         use24HourFormat: true,
         clockFormat: "",
         barOpacity: 1.0,
-        avatarPath: ""
+        avatarPath: "",
+        corner: true
     })
 
     property string fontFamily: defaults.fontFamily
@@ -53,6 +54,7 @@ Singleton {
     property string clockFormat: defaults.clockFormat
     property real barOpacity: defaults.barOpacity
     property string avatarPath: defaults.avatarPath
+    property bool corner: defaults.corner
 
     readonly property string configPath: (Quickshell.env("XDG_CONFIG_HOME") || (Quickshell.env("HOME") + "/.config")) + "/dev-shell/config.json"
 
@@ -85,6 +87,8 @@ Singleton {
             root.clockFormat = s.clockFormat !== undefined ? s.clockFormat : defaults.clockFormat
             root.barOpacity = s.barOpacity !== undefined ? s.barOpacity : defaults.barOpacity
             root.avatarPath = s.avatarPath !== undefined ? s.avatarPath : defaults.avatarPath
+            root.corner = s.corner !== undefined ? s.corner : defaults.corner
+            
             Logger.i("Config", "Loaded settings from", configPath)
         }
 
@@ -116,6 +120,7 @@ Singleton {
             property string clockFormat: ""
             property real barOpacity: 1.0
             property string avatarPath: ""
+            property bool corner: true
         }
     }
 
@@ -146,6 +151,7 @@ Singleton {
             configAdapter.clockFormat = root.clockFormat
             configAdapter.barOpacity = root.barOpacity
             configAdapter.avatarPath = root.avatarPath
+            configAdapter.corner = root.corner
             configFile.writeAdapter()
         }
     }
@@ -172,7 +178,7 @@ Singleton {
     onClockFormatChanged: save()
     onBarOpacityChanged: save()
     onAvatarPathChanged: save()
-
+    onCornerChanged: save()
     Component.onCompleted: load()
 
     function save() {
@@ -206,6 +212,7 @@ Singleton {
         clockFormat = defaults.clockFormat
         barOpacity = defaults.barOpacity
         avatarPath = defaults.avatarPath
+        corner = defaults.corner
         Logger.i("Config", "Settings reset to defaults")
     }
 
@@ -232,7 +239,8 @@ Singleton {
             use24HourFormat: use24HourFormat,
             clockFormat: clockFormat,
             barOpacity: barOpacity,
-            avatarPath: avatarPath
+            avatarPath: avatarPath,
+            corner: corner
         }
         exportProc.settingsJson = JSON.stringify(settings, null, 2)
         exportProc.filePath = filePath
@@ -281,6 +289,7 @@ Singleton {
                     if (settings.clockFormat !== undefined) clockFormat = settings.clockFormat
                     if (settings.barOpacity !== undefined) barOpacity = settings.barOpacity
                     if (settings.avatarPath !== undefined) avatarPath = settings.avatarPath
+                    if (settings.corner !== undefined) corner = settings.corner
                     Logger.i("Config", "Settings imported successfully")
                 } catch (e) {
                     Logger.e("Config", "Import failed: " + e)

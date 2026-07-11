@@ -21,7 +21,8 @@ PanelWindow {
     property bool topActive: !context.config.hideBar && !context.config.floatingBar && context.config.barPosition === "top"
     property bool bottomActive: !context.config.hideBar && !context.config.floatingBar && context.config.barPosition === "bottom"
 
-    visible: !context.activeWindow.isFullscreen
+    // visible: !context.activeWindow.isFullscreen || Config.corner
+    visible: Config.corner
     color: "transparent"
     exclusionMode: ExclusionMode.Ignore
     WlrLayershell.namespace: "quickshell:screenCorners"

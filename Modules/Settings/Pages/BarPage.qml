@@ -5,19 +5,17 @@ import Quickshell
 import qs.Core
 import qs.Services
 import qs.Widgets
-
+import "../components"
 ColumnLayout {
     property var context
     property var colors: context.colors
 
     spacing: 16
 
-    Text {
-        text: "Bar"
-        font.family: Config.fontFamily
-        font.pixelSize: 20
-        font.bold: true
-        color: colors.fg
+    SectionHeader {
+       title: "Bar" 
+       fontSize: Config.fontFamily * 2
+       showDivider: false
     }
 
     ToggleButton {
@@ -183,7 +181,7 @@ ColumnLayout {
             }
 
         }
-
+        
     }
 
     SettingItem {

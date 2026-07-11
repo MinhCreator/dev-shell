@@ -241,34 +241,34 @@ FloatingWindow {
                     }
 
                     // ── Config file button ──
-                    Rectangle {
-                        Layout.fillWidth: true
-                        Layout.preferredHeight: 48
-                        radius: 24
-                        color: colors.accent
-                        visible: !sidebarCollapsed
+                    // Rectangle {
+                    //     Layout.fillWidth: true
+                    //     Layout.preferredHeight: 48
+                    //     radius: 24
+                    //     color: colors.accent
+                    //     visible: !sidebarCollapsed
 
-                        RowLayout {
-                            anchors.centerIn: parent
-                            spacing: 12
-                            Text {
-                                text: "󰐏"
-                                font.family: "Symbols Nerd Font"
-                                font.pixelSize: 18
-                                color: colors.bg
-                            }
-                            Text {
-                                text: "Config file"
-                                color: colors.bg
-                                font.pixelSize: 14
-                                font.bold: true
-                            }
-                        }
-                        TapHandler {
-                            onTapped: Qt.openUrlExternally("file://" + Config.configPath)
-                            cursorShape: Qt.PointingHandCursor
-                        }
-                    }
+                    //     RowLayout {
+                    //         anchors.centerIn: parent
+                    //         spacing: 12
+                    //         Text {
+                    //             text: "󰐏"
+                    //             font.family: "Symbols Nerd Font"
+                    //             font.pixelSize: 18
+                    //             color: colors.bg
+                    //         }
+                    //         Text {
+                    //             text: "Config file"
+                    //             color: colors.bg
+                    //             font.pixelSize: 14
+                    //             font.bold: true
+                    //         }
+                    //     }
+                    //     TapHandler {
+                    //         onTapped: Qt.openUrlExternally("file://" + Config.configPath)
+                    //         cursorShape: Qt.PointingHandCursor
+                    //     }
+                    // }
 
                     // ── Spacer ──
                     Item {

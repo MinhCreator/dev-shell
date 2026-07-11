@@ -5,6 +5,7 @@ import Quickshell
 import Quickshell.Io
 import qs.Core
 import qs.Widgets
+import QtQuick.Dialogs
 
 ColumnLayout {
     id: root
@@ -143,6 +144,19 @@ ColumnLayout {
         }
     }
     
+    MessageDialog {
+        id: updateConfirmDialog
+    
+        title: "Update Shell"
+        text: "This will pull the latest changes from the repository. A restart will be required."
+        buttons: MessageDialog.Ok | MessageDialog.Cancel
+        onAccepted: {
+            root.updating = true;
+            pullProc.running = true;
+        }
+    }
+
+
     spacing: 16
 
     Text {
@@ -222,12 +236,11 @@ ColumnLayout {
                 
                 onClicked: {
                     if (root.commitCount > 0) {
-                        root.updating = true;
-                        pullProc.running = true;
+                         updateConfirmDialog.open();
                     } else {
-                        root.checking = true;
-                        fetchProc.running = true;
-                        root.statusMessage = "Checking for updates...";
+                         root.checking = true;
+                         fetchProc.running = true;
+                         root.statusMessage = "Checking for updates...";
                     }
                 }
                 

@@ -93,3 +93,4 @@ ipc call lock lock
 - [ ] Add screenshot (Integration HyprQuickFrame)
 - [ ] Add night light
 - [ ] Add power profile/battery top bar widget/gamemode
+- [ ] Add app dock

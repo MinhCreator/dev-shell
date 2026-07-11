@@ -4,6 +4,7 @@ import QtQuick.Controls
 import QtQuick.Effects
 import QtQuick.Layouts
 import QtQuick.Shapes
+import Quickshell.Widgets
 import qs.Core
 import qs.Services
 
@@ -57,42 +58,43 @@ Item {
                     clip: true
                     color: "transparent"
 
-                    Image {
-                        id: weatherBgImg
+                   
 
-                        anchors.fill: parent
-                        source: "../../../../Assets/" + (WeatherService.isDay ? "day.png" : "night.png")
-                        fillMode: Image.PreserveAspectCrop
-                        layer.enabled: true
+                        Image {
+                            id: weatherBgImg
 
-                        Rectangle {
                             anchors.fill: parent
-                            visible: parent.status !== Image.Ready
+                            source: "../../../../Assets/" + (WeatherService.isDay ? "day.png" : "night.png")
+                            fillMode: Image.PreserveAspectCrop
+                            layer.enabled: true
+                            
 
-                            gradient: Gradient {
-                                GradientStop {
-                                    position: 0
-                                    color: root.topColor
-                                }
+                            Rectangle {
+                                anchors.fill: parent
+                                visible: parent.status !== Image.Ready
 
-                                GradientStop {
-                                    position: 0.5
-                                    color: root.midColor
-                                }
+                                gradient: Gradient {
+                                    GradientStop {
+                                        position: 0
+                                        color: root.topColor
+                                    }
 
-                                GradientStop {
-                                    position: 1
-                                    color: root.botColor
-                                }
+                                    GradientStop {
+                                        position: 0.5
+                                        color: root.midColor
+                                    }
 
+                                    GradientStop {
+                                        position: 1
+                                        color: root.botColor
+                                    }
                             }
-
                         }
 
                         layer.effect: OpacityMask {
                             maskSource: maskRect
                         }
-
+                        
                     }
 
                     Rectangle {

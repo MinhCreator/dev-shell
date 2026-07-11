@@ -3,6 +3,7 @@ import QtQuick.Controls
 import QtQuick.Layouts
 import Qt5Compat.GraphicalEffects
 import Quickshell
+import Quickshell.Widgets
 import qs.Core
 import qs.Services
 import qs.Widgets
@@ -36,39 +37,39 @@ ColumnLayout {
             border.width: 1
             border.color: colors.border
             
-            // Fix: Apply clip so the internal image doesn't overflow before mask
-            // But we are using OpacityMask, so the mask handles the shape.
-            // However, the card background itself needs clipping if we want the border to match perfectly?
-            // Actually, OpacityMask on layer handles the content.
-            // We just need the frame to be visible.
+            // ClippingRectangle handles the rounded corners
 
-            Image {
-                id: currentWallpaperImg
+            ClippingRectangle {
                 anchors.fill: parent
-                source: "file://" + WallpaperService.getWallpaper(Quickshell.screens[0]?.name || "")
-                fillMode: Image.PreserveAspectCrop
-                sourceSize.width: 1920 
-                sourceSize.height: 1080
-                asynchronous: true
-                cache: false 
-                visible: false // Hidden because it's masked
-                
-                // Reload when wallpaper changes
-                Connections {
-                    target: WallpaperService
-                    function onWallpaperChanged() {
-                        currentWallpaperImg.source = "file://" + WallpaperService.getWallpaper(Quickshell.screens[0]?.name || "")
+                radius: 16
+
+                Image {
+                    id: currentWallpaperImg
+                    anchors.fill: parent
+                    source: "file://" + WallpaperService.getWallpaper(Quickshell.screens[0]?.name || "")
+                    fillMode: Image.PreserveAspectCrop
+                    sourceSize.width: 1920 
+                    sourceSize.height: 1080
+                    asynchronous: true
+                    cache: false 
+
+                    // Reload when wallpaper changes
+                    Connections {
+                        target: WallpaperService
+                        function onWallpaperChanged() {
+                            currentWallpaperImg.source = "file://" + WallpaperService.getWallpaper(Quickshell.screens[0]?.name || "")
+                        }
                     }
                 }
-            }
-            
-            OpacityMask {
-                anchors.fill: parent
-                source: currentWallpaperImg
-                maskSource: Rectangle {
-                    width: imageCard.width
-                    height: imageCard.height
-                    radius: 16
+                
+                OpacityMask {
+                    anchors.fill: parent
+                    source: currentWallpaperImg
+                    maskSource: Rectangle {
+                        width: imageCard.width
+                        height: imageCard.height
+                        radius: 16
+                    }
                 }
             }
         }

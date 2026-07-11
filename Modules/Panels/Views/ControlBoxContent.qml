@@ -4,6 +4,7 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 import Quickshell
+import Quickshell.Widgets
 import qs.Core
 import qs.Modules.Notifications
 import qs.Services
@@ -44,10 +45,10 @@ ColumnLayout {
                     return "file://" + Quickshell.env("HOME") + "/.face";
                 }
                 fillMode: Image.PreserveAspectCrop
-                visible: false
+                visible: status === Image.Ready
             }
 
-            OpacityMask {
+             OpacityMask {
                 anchors.fill: parent
                 source: avatarImg
                 visible: avatarImg.status === Image.Ready
@@ -63,20 +64,18 @@ ColumnLayout {
                 anchors.fill: parent
                 source: "../../Assets/arch.svg"
                 fillMode: Image.PreserveAspectCrop
-                visible: false
+                visible: avatarImg.status !== Image.Ready
             }
 
             OpacityMask {
                 anchors.fill: parent
                 source: fallbackImg
-                visible: avatarImg.status !== Image.Ready
                 maskSource: Rectangle {
                     width: 42
                     height: 42
                     radius: 21
                 }
             }
-
         }
 
         ColumnLayout {

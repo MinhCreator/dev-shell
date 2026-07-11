@@ -4,6 +4,7 @@ import QtQuick
 import QtQuick.Layouts
 import Quickshell
 import Quickshell.Io
+import Quickshell.Widgets
 import qs.Core
 import qs.Services
 
@@ -19,29 +20,30 @@ BentoCard {
         anchors.centerIn: parent
         spacing: 12
 
-        Item {
+        ClippingRectangle {
             Layout.preferredWidth: 100
             Layout.preferredHeight: 100
             Layout.alignment: Qt.AlignHCenter
+            radius: 50
 
             Image {
                 anchors.fill: parent
-                source: "file:///home/" + Quickshell.env("USER") + "/.face"
+                source: "file://" + Quickshell.env("HOME") + "/.face"
                 fillMode: Image.PreserveAspectCrop
                 layer.enabled: true
                 onStatusChanged: {
                     if (status === Image.Error) {
                         if (source.toString().endsWith("/.face"))
-                            source = "file:///home/" + Quickshell.env("USER") + "/.face.icon";
+                            source = "file://" + Quickshell.env("HOME") + "/.face.icon";
                         else if (source.toString().endsWith("/.face.icon"))
                             source = "/var/lib/AccountsService/icons/" + Quickshell.env("USER");
                         else
                             source = SvgIcons.logo;
                     }
                 }
-
+                
                 layer.effect: OpacityMask {
-
+                    
                     maskSource: Rectangle {
                         width: 100
                         height: 100
@@ -49,9 +51,7 @@ BentoCard {
                     }
 
                 }
-
             }
-
         }
 
         Text {

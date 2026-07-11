@@ -4,6 +4,7 @@ import QtQuick.Controls
 import QtQuick.Layouts
 import Quickshell
 import Quickshell.Wayland
+import Quickshell.Widgets
 import qs.Core
 
 PanelWindow {
@@ -176,38 +177,38 @@ PanelWindow {
                             color: theme.surface
 
                             Image {
-                                id: imgDisplay
+                                    id: imgDisplay
 
-                                anchors.fill: parent
-                                fillMode: Image.PreserveAspectCrop
-                                layer.enabled: true
-                                source: {
-                                    if (typeof image !== "undefined" && image && image.startsWith("/"))
-                                        return "file://" + image;
+                                    anchors.fill: parent
+                                    fillMode: Image.PreserveAspectCrop
+                                    layer.enabled: true
+                                    source: {
+                                        if (typeof image !== "undefined" && image && image.startsWith("/"))
+                                            return "file://" + image;
 
-                                    if (typeof image !== "undefined" && image && image.includes("://"))
-                                        return image;
+                                        if (typeof image !== "undefined" && image && image.includes("://"))
+                                            return image;
 
-                                    if (typeof appIcon !== "undefined" && appIcon && appIcon.includes("/"))
-                                        return "file://" + appIcon;
+                                        if (typeof appIcon !== "undefined" && appIcon && appIcon.includes("/"))
+                                            return "file://" + appIcon;
 
-                                    if (typeof appIcon !== "undefined" && appIcon)
-                                        return "image://icon/" + appIcon;
+                                        if (typeof appIcon !== "undefined" && appIcon)
+                                            return "image://icon/" + appIcon;
 
-                                    return "";
-                                }
-                                visible: status === Image.Ready
-
-                                layer.effect: OpacityMask {
-
-                                    maskSource: Rectangle {
-                                        width: 40
-                                        height: 40
-                                        radius: 12
+                                        return "";
                                     }
+                                    visible: status === Image.Ready
 
+                                    layer.effect: OpacityMask {
+
+                                        maskSource: Rectangle {
+                                            width: 40
+                                            height: 40
+                                            radius: 12
+                                        }
+
+                                    }
                                 }
-
                             }
 
                             Text {
@@ -388,7 +389,6 @@ PanelWindow {
 
         }
 
-    }
 
     mask: Region {
         item: contentList

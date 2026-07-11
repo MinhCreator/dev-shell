@@ -7,6 +7,7 @@ import Quickshell.Wayland
 import Quickshell.Io
 import QtQuick.Effects
 import QtQuick.Dialogs
+import Quickshell.Widgets
 import Qt5Compat.GraphicalEffects
 import qs.Core
 import qs.Services
@@ -153,17 +154,19 @@ FloatingWindow {
                                 }
                             }
 
-                            Image {
-                                id: avatarImage
-                                anchors.fill: parent
-                                source: Config.avatarPath !== "" ? (Config.avatarPath.startsWith("/") ? "file://" + Config.avatarPath : Config.avatarPath) : ""
-                                sourceSize: Qt.size(56, 56)
-                                fillMode: Image.PreserveAspectCrop
-                                smooth: true
-                                visible: false
-                            }
+                           
 
-                            OpacityMask {
+                                Image {
+                                    id: avatarImage
+                                    anchors.fill: parent
+                                    source: Config.avatarPath !== "" ? (Config.avatarPath.startsWith("/") ? "file://" + Config.avatarPath : Config.avatarPath) : ""
+                                    sourceSize: Qt.size(56, 56)
+                                    fillMode: Image.PreserveAspectCrop
+                                    smooth: true
+                                    visible: status === Image.Ready
+                                }
+                            
+                             OpacityMask {
                                 anchors.fill: parent
                                 source: avatarImage
                                 visible: avatarImage.status === Image.Ready

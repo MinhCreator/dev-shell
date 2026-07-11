@@ -79,7 +79,7 @@ Item {
     Process {
         id: batProc
 
-        command: ["sh", "-c", "echo $(cat /sys/class/power_supply/BAT0/capacity) $(cat /sys/class/power_supply/BAT0/status)"]
+        command: ["sh", "-c", "BAT=$(ls /sys/class/power_supply/ | grep -E 'BAT|battery' | head -1) && if [ -n \"$BAT\" ]; then echo $(cat /sys/class/power_supply/$BAT/capacity) $(cat /sys/class/power_supply/$BAT/status); else echo \"100 Full\"; fi"]
 
         stdout: SplitParser {
             onRead: (data) => {

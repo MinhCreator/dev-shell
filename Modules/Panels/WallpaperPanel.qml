@@ -5,6 +5,7 @@ import QtQuick.Layouts
 import Quickshell
 import Quickshell.Io
 import Quickshell.Wayland
+import Quickshell.Widgets
 import qs.Core
 import qs.Modules.Corners
 import qs.Services
@@ -229,50 +230,51 @@ PanelWindow {
                         scale: (delegateRoot.isHovered || delegateRoot.isCurrent) ? 1.05 : 1
                         opacity: isCurrent ? 1 : 0.5
 
-                        Image {
-                            id: img
-
-                            readonly property string fileName: modelData.split('/').pop()
-                            readonly property string fileExt: fileName.split('.').pop().toLowerCase()
-                            readonly property bool hasThumb: ["jpg", "jpeg", "png", "webp", "bmp"].includes(fileExt)
-                            readonly property string thumbPath: WallpaperService.previewDirectory + "/" + fileName
-                            readonly property string originalSource: "file://" + modelData
-                            readonly property string thumbSource: hasThumb ? ("file://" + thumbPath) : originalSource
-
+                        ClippingRectangle {
                             anchors.fill: parent
                             anchors.margins: card.border.width
-                            source: thumbSource
-                            sourceSize.width: 400
-                            sourceSize.height: 280
-                            fillMode: Image.PreserveAspectCrop
-                            asynchronous: true
-                            cache: true
-                            smooth: true
-                            opacity: status === Image.Ready ? 1 : 0
-                            onStatusChanged: {
-                                if (status === Image.Error && source !== originalSource)
-                                    source = originalSource;
+                            radius: 14
 
-                            }
-                            layer.enabled: true
+                            Image {
+                                id: img
 
-                            Behavior on opacity {
-                                NumberAnimation {
-                                    duration: Animations.fast
+                                readonly property string fileName: modelData.split('/').pop()
+                                readonly property string fileExt: fileName.split('.').pop().toLowerCase()
+                                readonly property bool hasThumb: ["jpg", "jpeg", "png", "webp", "bmp"].includes(fileExt)
+                                readonly property string thumbPath: WallpaperService.previewDirectory + "/" + fileName
+                                readonly property string originalSource: "file://" + modelData
+                                readonly property string thumbSource: hasThumb ? ("file://" + thumbPath) : originalSource
+
+                                anchors.fill: parent
+                                source: thumbSource
+                                sourceSize.width: 400
+                                sourceSize.height: 280
+                                fillMode: Image.PreserveAspectCrop
+                                asynchronous: true
+                                cache: true
+                                smooth: true
+                                opacity: status === Image.Ready ? 1 : 0
+                                onStatusChanged: {
+                                    if (status === Image.Error && source !== originalSource)
+                                        source = originalSource;
                                 }
+                                layer.enabled: true
 
-                            }
-
-                            layer.effect: OpacityMask {
-
-                                maskSource: Rectangle {
-                                    width: img.width
-                                    height: img.height
-                                    radius: 14
+                                Behavior on opacity {
+                                    NumberAnimation {
+                                        duration: Animations.fast
+                                    }
                                 }
+                                layer.effect: OpacityMask {
 
+                                    maskSource: Rectangle {
+                                        width: img.width
+                                        height: img.height
+                                        radius: 14
+                                    }
+
+                                }
                             }
-
                         }
 
                         Rectangle {

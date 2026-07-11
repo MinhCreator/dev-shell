@@ -18,7 +18,6 @@ Singleton {
     readonly property bool scanning: (scanningCount > 0)
     property bool isInitialized: false
     property string wallpaperCacheFile: Quickshell.env("HOME") + "/.cache/dev-shell/wallpapers.json"
-    property string colorsCacheFile: Quickshell.env("HOME") + "/.cache/dev-shell/colors.json"
     property string defaultWallpaper: ""
     property string previewDirectory: Quickshell.env("HOME") + "/.cache/dev-shell/wallpreviews_large"
     readonly property string systemDefaultWallpaper: Quickshell.shellDir + "/Assets/default_wallpaper.png"
@@ -75,22 +74,49 @@ Singleton {
         Ipc.copyWallpaper(path, Quickshell.env("HOME") + "/.cache/dev-shell/current_wallpaper");
         generateColors(path);
     }
-    readonly property string colorGenScript: Quickshell.shellDir + "/Scripts/template-processor.py"
-    readonly property string colorTemplate: Quickshell.shellDir + "/Assets/Templates/dev_colors.json"
-
     function generateColors(path) {
         if (!path)
             return ;
 
-        var outputPath = colorsCacheFile;
-        var cmd = 'python3 "' + colorGenScript + '" "' + path + '" --scheme-type tonal-spot --dark -r "' + colorTemplate + ':' + outputPath + '"';
-        Logger.d("Wallpaper", "Generating colors:", cmd);
-        Ipc.runColorGen(cmd);
+         // Call matugen instead of ColorService
+        matugenProc.command = ["matugen", "image", path]
+        matugenProc.running = true;
+
+        Logger.d("Wallpaper", "Generating colors via matugen:", path);
+    }
+
+    Process {
+        id: matugenProc
+        command: ["matugen", "image", ""]
+        onRunningChanged: {
+            if (!running) {
+                Logger.d("Wallpaper", "matugen completed, colors.json updated");
+            }
+        }
     }
 
     function applyOpenRGB() {
-        colorsFileView.path = "";
-        colorsFileView.path = colorsCacheFile;
+        var selectedColor = ColorService.accentColor;
+        if (selectedColor) {
+            var hex = selectedColor.toString().replace("#", "");
+            Logger.d("Wallpaper", "Applying OpenRGB color:", hex);
+            var args = ["openrgb"];
+            var devices = Config.openRgbDevices;
+            if (devices && devices.length > 0) {
+                for (var i = 0; i < devices.length; i++) {
+                    args.push("--device");
+                    args.push(devices[i].toString());
+                    args.push("--color");
+                    args.push(hex);
+                }
+                Logger.d("Wallpaper", "OpenRGB command:", args.join(" "));
+                Ipc.runOpenRgb(args);
+            } else {
+                Logger.d("Wallpaper", "No OpenRGB devices selected, skipping sync");
+            }
+        } else {
+            Logger.e("Wallpaper", "No accent color available");
+        }
     }
 
     function getWallpapersList(screenName) {
@@ -102,7 +128,7 @@ Singleton {
 
     function refreshWallpapersList() {
         Logger.d("Wallpaper", "Refreshing wallpapers list");
-        Ipc.generateThumbnails("/etc/xdg/quickshell/dev-shell/Scripts/generate_previews.py", root.defaultDirectory, root.previewDirectory);
+        Ipc.generateThumbnails(Quickshell.shellDir + "/Scripts/generate_previews.py", root.defaultDirectory, root.previewDirectory);
         scanningCount = 0;
         for (var i = 0; i < wallpaperScanners.count; i++) {
             var scanner = wallpaperScanners.objectAt(i);
@@ -121,13 +147,9 @@ Singleton {
     Component.onCompleted: init()
 
     Connections {
-        function onColorGenFinished(code) {
-            if (code === 0) {
-                Logger.d("Wallpaper", "Color generation finished successfully");
-                Qt.callLater(applyOpenRGB);
-            } else {
-                Logger.e("Wallpaper", "Color generation failed with code:", code);
-            }
+        function onColorsExtracted() {
+            Logger.d("Wallpaper", "Colors extracted successfully");
+            Qt.callLater(applyOpenRGB);
         }
 
         function onThumbnailGenerationFinished(code) {
@@ -213,66 +235,6 @@ Singleton {
         }
 
         target: Ipc
-    }
-
-    FileView {
-        id: colorsFileView
-
-        path: ""
-        onLoaded: {
-            Logger.d("Wallpaper", "Colors file loaded, extracting color...");
-            try {
-                var colors = colorsAdapter.colors;
-                var selectedColor = null;
-                if (colors) {
-                    if (colors.source_color)
-                        selectedColor = (typeof colors.source_color === "string") ? colors.source_color : (colors.source_color.default || colors.source_color.light || colors.source_color.dark);
-                    else if (colors.tertiary)
-                        selectedColor = (typeof colors.tertiary === "string") ? colors.tertiary : (colors.tertiary.default || colors.tertiary.light || colors.tertiary.dark);
-                    else if (colors.primary)
-                        selectedColor = (typeof colors.primary === "string") ? colors.primary : (colors.primary.default || colors.primary.light || colors.primary.dark);
-                }
-                if (selectedColor) {
-                    var hex = selectedColor.toString().replace("#", "");
-                    Logger.d("Wallpaper", "Applying OpenRGB color (Source/Accent):", hex);
-                    var args = ["openrgb"];
-                    var devices = Config.openRgbDevices;
-                    var devices = Config.openRgbDevices;
-                    if (devices && devices.length > 0) {
-                        for (var i = 0; i < devices.length; i++) {
-                            args.push("--device");
-                            args.push(devices[i].toString());
-                            args.push("--color");
-                            args.push(hex);
-                        }
-                        Logger.d("Wallpaper", "OpenRGB command:", args.join(" "));
-                        Ipc.runOpenRgb(args);
-                    } else {
-                        Logger.d("Wallpaper", "No OpenRGB devices selected, skipping sync");
-                    }
-                } else {
-                    Logger.e("Wallpaper", "Could not extract color from colors.json");
-                    Logger.d("Wallpaper", "JSON keys:", JSON.stringify(Object.keys(colors || {
-                    })));
-                }
-            } catch (e) {
-                Logger.e("Wallpaper", "Error parsing colors:", e);
-            }
-        }
-        onLoadFailed: (error) => {
-            Logger.e("Wallpaper", "Failed to load colors file:", error);
-        }
-
-        adapter: JsonAdapter {
-            id: colorsAdapter
-
-            property var colors
-            property var palettes
-            property string image
-            property bool is_dark_mode
-            property string mode
-        }
-
     }
 
     FileView {

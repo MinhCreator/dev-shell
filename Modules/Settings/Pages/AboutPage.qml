@@ -4,13 +4,14 @@ import QtQuick.Controls
 import QtQuick.Layouts
 import Quickshell
 import Quickshell.Io
+import Quickshell.Widgets
 import qs.Services as LocalServices
 
 ColumnLayout {
     id: root
 
     property var context
-    property var colors: context.colors
+    property var colors: context ? context.colors : null
     property string kernelVersion: "..."
     property string distroName: distroInfo.name
     property string distroUrl: distroInfo.url
@@ -254,13 +255,7 @@ ColumnLayout {
                 "name": "MinhCreatorVN",
                 "url": "https://github.com/MinhCreator",
                 "image": "https://avatars.githubusercontent.com/MinhCreator"
-            }
-            //, {
-            //     "name": "ikeshav26",
-            //     "url": "https://github.com/ikeshav26",
-            //     "image": Quickshell.shellPath("Assets/keshav.png")
-            // }
-            ]
+            }]
 
             delegate: Rectangle {
                 id: devCard
@@ -291,23 +286,26 @@ ColumnLayout {
                         Layout.preferredWidth: 58
                         Layout.preferredHeight: 58
 
-                        Image {
-                            id: avatar
-
+                        ClippingRectangle {
                             anchors.fill: parent
-                            source: modelData.image
-                            sourceSize: Qt.size(58, 58)
-                            fillMode: Image.PreserveAspectCrop
-                            smooth: true
-                            visible: false
-                            onStatusChanged: {
-                                if (status === Image.Error)
-                                    fallback.visible = true;
+                            radius: 29
 
+                            Image {
+                                id: avatar
+
+                                anchors.fill: parent
+                                source: modelData.image
+                                sourceSize: Qt.size(58, 58)
+                                fillMode: Image.PreserveAspectCrop
+                                smooth: true
+                                visible: status === Image.Ready
+                                onStatusChanged: {
+                                    if (status === Image.Error)
+                                        fallback.visible = true;
+                                }
                             }
-                        }
 
-                        OpacityMask {
+                             OpacityMask {
                             anchors.fill: parent
                             source: avatar
                             visible: avatar.status === Image.Ready
@@ -318,7 +316,6 @@ ColumnLayout {
                                 radius: 29
                                 visible: true
                             }
-
                         }
 
                         Rectangle {

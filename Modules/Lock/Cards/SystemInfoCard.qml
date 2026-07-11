@@ -2,14 +2,76 @@ import "../Components"
 import QtQuick
 import QtQuick.Layouts
 import Quickshell
+import Quickshell.Io
 
 BentoCard {
     id: root
 
     required property var colors
 
+    property string kernelVersion: "..."
+    property string distroName: "Linux"
+    property string hostname: "localhost"
+    property string shellName: "sh"
+    property string wmName: "Hyprland"
+    property string uptime: "..."
+
     cardColor: colors.surface
     borderColor: colors.border
+
+    Component.onCompleted: {
+        kernelProc.running = true
+        hostnameProc.running = true
+        shellProc.running = true
+        wmProc.running = true
+        uptimeProc.running = true
+    }
+
+    Process {
+        id: kernelProc
+        command: ["uname", "-r"]
+        stdout: SplitParser {
+            onRead: (data) => root.kernelVersion = data.trim()
+        }
+    }
+
+    Process {
+        id: hostnameProc
+        command: ["hostname"]
+        stdout: SplitParser {
+            onRead: (data) => root.hostname = data.trim()
+        }
+    }
+
+    Process {
+        id: shellProc
+        command: ["sh", "-c", "echo $SHELL"]
+        stdout: SplitParser {
+            onRead: (data) => {
+                var shell = data.trim().split("/").pop()
+                root.shellName = shell
+            }
+        }
+    }
+
+    Process {
+        id: wmProc
+        command: ["sh", "-c", "echo $XDG_CURRENT_DESKTOP"]
+        stdout: SplitParser {
+            onRead: (data) => {
+                var wm = data.trim()
+                if (wm) root.wmName = wm
+            }
+        }
+    }
+
+    Process {
+        id: uptimeProc
+        command: ["sh", "-c", "uptime -p"]
+        stdout: SplitParser {
+            onRead: (data) => root.uptime = data.trim().replace("up ", "")
+        }
+    }
 
     RowLayout {
         anchors.centerIn: parent
@@ -26,7 +88,7 @@ BentoCard {
             spacing: 5
 
             Text {
-                text: Quickshell.env("USER") + "@archbtw"
+                text: Quickshell.env("USER") + "@" + root.hostname
                 font.weight: Font.Bold
                 font.pixelSize: 16
                 color: root.colors.accent
@@ -45,32 +107,32 @@ BentoCard {
             Repeater {
                 model: [{
                     "label": "OS",
-                    "value": "Arch Linux",
+                    "value": root.distroName,
                     "icon": "",
                     "color": root.colors.blue
                 }, {
                     "label": "Host",
-                    "value": "archbtw",
+                    "value": root.hostname,
                     "icon": "",
                     "color": root.colors.purple
                 }, {
                     "label": "Kernel",
-                    "value": "6.18.2-arch2-1",
+                    "value": root.kernelVersion,
                     "icon": "",
                     "color": root.colors.green
                 }, {
                     "label": "Uptime",
-                    "value": "3 hours",
+                    "value": root.uptime,
                     "icon": "",
                     "color": root.colors.yellow
                 }, {
                     "label": "Shell",
-                    "value": "zsh",
+                    "value": root.shellName,
                     "icon": "",
                     "color": root.colors.orange
                 }, {
                     "label": "WM",
-                    "value": "Hyprland",
+                    "value": root.wmName,
                     "icon": "",
                     "color": root.colors.red
                 }]

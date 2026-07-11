@@ -3,6 +3,7 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 import Quickshell
+import Quickshell.Widgets
 import qs.Core
 import qs.Services
 
@@ -23,14 +24,14 @@ Item {
     height: implicitHeight
 
     Rectangle {
-        id: cardBackground
-
-        anchors.fill: parent
-        radius: 16
-        color: "#1a1a1a"
-        border.width: 1
-        border.color: theme.border
-        layer.enabled: true
+            id: cardBackground
+            anchors.fill: parent
+            radius: 16
+            color: "#1a1a1a"
+            border.width: 1
+            border.color: theme.border
+            layer.enabled: true
+        }
 
         Rectangle {
             id: playerSelector
@@ -510,7 +511,7 @@ Item {
 
         }
 
-        layer.effect: OpacityMask {
+         layer.effect: OpacityMask {
 
             maskSource: Rectangle {
                 width: cardBackground.width
@@ -520,8 +521,7 @@ Item {
             }
 
         }
-
-    }
+    
 
     Behavior on height {
         NumberAnimation {

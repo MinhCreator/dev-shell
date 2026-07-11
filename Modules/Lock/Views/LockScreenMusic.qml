@@ -5,6 +5,7 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 import Quickshell
+import Quickshell.Widgets
 import qs.Core
 import qs.Services
 
@@ -262,24 +263,24 @@ Item {
                         radius: 32
                         color: "#151515"
                         layer.enabled: true
-
+                       
                         Image {
-                            anchors.fill: parent
-                            source: MprisService.artUrl
-                            fillMode: Image.PreserveAspectCrop
-                            asynchronous: true
-                            layer.enabled: true
+                                anchors.fill: parent
+                                source: MprisService.artUrl
+                                fillMode: Image.PreserveAspectCrop
+                                asynchronous: true
+                                layer.enabled: true
 
-                            layer.effect: OpacityMask {
+                                layer.effect: OpacityMask {
 
-                                maskSource: Rectangle {
-                                    width: artWrapper.width
-                                    height: artWrapper.height
-                                    radius: 32
+                                    maskSource: Rectangle {
+                                        width: artWrapper.width
+                                        height: artWrapper.height
+                                        radius: 32
+                                    }
+
                                 }
-
                             }
-
                         }
 
                         Rectangle {
@@ -734,7 +735,6 @@ Item {
 
         }
 
-    }
 
     Item {
         id: footer

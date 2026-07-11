@@ -3,11 +3,11 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/github/last-commit/MannuVilasara/xenon-shell?style=for-the-badge&color=8ad7eb&logo=git&logoColor=D9E0EE&labelColor=1E202B" alt="Last Commit" />
+  <img src="https://img.shields.io/github/last-commit/MinhCreator/dev-shell?style=for-the-badge&color=8ad7eb&logo=git&logoColor=D9E0EE&labelColor=1E202B" alt="Last Commit" />
   &nbsp;
-  <img src="https://img.shields.io/github/stars/MannuVilasara/xenon-shell?style=for-the-badge&logo=andela&color=86dbd7&logoColor=D9E0EE&labelColor=1E202B" alt="Stars" />
+  <img src="https://img.shields.io/github/stars/MinhCreator/dev-shell?style=for-the-badge&logo=andela&color=86dbd7&logoColor=D9E0EE&labelColor=1E202B" alt="Stars" />
   &nbsp;
-  <img src="https://img.shields.io/github/repo-size/MannuVilasara/xenon-shell?color=86dbce&label=SIZE&logo=protondrive&style=for-the-badge&logoColor=D9E0EE&labelColor=1E202B" alt="Repo Size" />
+  <img src="https://img.shields.io/github/repo-size/MinhCreator/dev-shell?color=86dbce&label=SIZE&logo=protondrive&style=for-the-badge&logoColor=D9E0EE&labelColor=1E202B" alt="Repo Size" />
   &nbsp;
   <br />
 </p>
@@ -73,3 +73,23 @@ ipc call cliphistService update
 
 ipc call lock lock
 ```
+
+## TODO/WORK IN PROGRESS
+- [ ] Rework app launcher
+- [ ] Rework settings
+- [ ] Rework power menu
+- [ ] Rework wallpaper picker
+- [ ] Rework lock screen
+- [ ] Rework music/weather panel
+- [ ] Rework side panel 
+- [ ] Rework top bar panel 
+- [ ] Rework center panel 
+- [ ] Rework wifi panel/It function 
+- [ ] Rework bluetooth panel/It function 
+- [ ] Improvement performance
+- [ ] Add file picker
+- [ ] Add top bar dashboard
+- [ ] Add widgets top bar system
+- [ ] Add screenshot (Integration HyprQuickFrame)
+- [ ] Add night light
+- [ ] Add power profile/battery top bar widget/gamemode

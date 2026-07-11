@@ -16,7 +16,8 @@ WlSessionLockSurface {
     required property var colors
     readonly property bool musicModeActive: Config.lockScreenMusicMode && (MprisService.artUrl !== "" || MprisService.title !== "")
 
-    color: "transparent"
+    // color: "transparent"
+    color: Qt.rgba(0, 0, 0, 0.1) 
     onMusicModeActiveChanged: focusTimer.restart()
     Component.onCompleted: {
         console.log("LockScreen: Controller Loaded. MusicMode=" + musicModeActive);

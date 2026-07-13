@@ -78,7 +78,7 @@ ipc call lock lock
 - [ ] Rework app launcher
 - [ ] Rework settings
 - [ ] Rework power menu
-- [ ] Rework wallpaper picker
+- [x] Rework wallpaper picker
 - [ ] Rework lock screen
 - [ ] Rework music/weather panel
 - [ ] Rework side panel 

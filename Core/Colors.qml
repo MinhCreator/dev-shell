@@ -3,19 +3,25 @@ import Quickshell
 import Quickshell.Io
 
 Item {
+    function deriveAccentColor(targetHue) {
+        if (!loadedColors) return "transparent";
+            var base = Qt.color(loadedColors.primary.dark);
+        return Qt.hsla(targetHue / 360.0, Math.min(1.0, base.hslSaturation * 1.3), base.hslLightness * 0.95, 1.0);
+    }
+
     property color bg: loadedColors ? (loadedColors.surface.dark || "transparent") : "transparent"
     property color fg: loadedColors ? (loadedColors.on_surface.dark || "transparent") : "transparent"
     property color muted: loadedColors ? (loadedColors.surface_variant.dark || "transparent") : "transparent"
-    property color cyan: "#0db9d7"
-    property color purple: "#ad8ee6"
+    property color cyan: loadedColors ? Qt.color(loadedColors.primary.dark) : "transparent"
+    property color purple: loadedColors ? Qt.color(loadedColors.tertiary.dark) : "transparent"
     property color red: loadedColors ? (loadedColors.error.dark || "transparent") : "transparent"
-    property color yellow: "#e0af68"
+    property color yellow: deriveAccentColor(60)
     property color blue: loadedColors ? (loadedColors.primary.dark || "transparent") : "transparent"
-    property color green: "#9ece6a"
+    property color green: deriveAccentColor(120)
     property color surface: loadedColors ? (loadedColors.surface_container.dark || "transparent") : "transparent"
     property color border: loadedColors ? (loadedColors.outline.dark || "transparent") : "transparent"
     property color subtext: loadedColors ? (loadedColors.on_surface_variant.dark || "transparent") : "transparent"
-    property color orange: "#ff9e64"
+    property color orange: deriveAccentColor(30)
     property color teal: loadedColors ? (loadedColors.secondary.dark || "transparent") : "transparent"
     property color accent: loadedColors ? (loadedColors.primary.dark || "transparent") : "transparent"
     property color text: fg

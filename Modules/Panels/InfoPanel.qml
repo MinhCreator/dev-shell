@@ -38,7 +38,7 @@ PanelWindow {
     WlrLayershell.layer: WlrLayer.Overlay
     WlrLayershell.exclusiveZone: -1
     mask: (root.isOpen || root.forcedOpen) ? fullMask : splitMask
-
+    // visible : false
     anchors {
         top: true
         bottom: true

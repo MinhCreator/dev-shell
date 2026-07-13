@@ -104,7 +104,7 @@ Singleton {
         }
 
         property QtObject overview: QtObject {
-            property int rows: root.readInt("overview.rows", 2)
+            property int rows: root.readInt("overview.rows", 3)
             property int columns: root.readInt("overview.columns", 5)
             property real scale: root.readReal("overview.scale", 0.16)
             property bool enable: root.readBool("overview.enable", true)
@@ -118,7 +118,7 @@ Singleton {
             property string previewMode: root.readString("overview.previewMode", "live")
             property bool includeInactiveMonitorPreviews: root.readBool("overview.includeInactiveMonitorPreviews", true)
             property int previewRecaptureDelayMs: root.readInt("overview.previewRecaptureDelayMs", 60)
-            property bool showSpecialWorkspaces: root.readBool("overview.showSpecialWorkspaces", true)
+            property bool showSpecialWorkspaces: root.readBool("overview.showSpecialWorkspaces", false)
             property var specialWorkspaces: root.read("overview.specialWorkspaces", [])
             property int specialWorkspaceColumns: root.readInt("overview.specialWorkspaceColumns", columns)
             property string emptyWorkspaceWallpaper: root.readString("overview.emptyWorkspaceWallpaper", "")
@@ -165,7 +165,7 @@ Singleton {
         command: [
             "sh",
             "-lc",
-            "cfg=\"${XDG_CONFIG_HOME:-$HOME/.config}/quickshell/overview/config.json\"; [ -r \"$cfg\" ] && cat \"$cfg\""
+            "cfg=\"${XDG_CONFIG_HOME:-$HOME/.config}/dev-shell/overview/config.json\"; [ -r \"$cfg\" ] && cat \"$cfg\""
         ]
         stdout: StdioCollector {
             id: configCollector

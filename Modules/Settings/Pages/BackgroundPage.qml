@@ -151,7 +151,7 @@ ColumnLayout {
                     verticalAlignment: Text.AlignVCenter
                 }
                 
-                onClicked: context.appState.toggleWallpaperPanel()
+                onClicked: context.appState.toggleWallPicker()
             }
         }
     }

@@ -7,6 +7,7 @@ import qs.Modules.Launcher
 import qs.Modules.Notifications
 import qs.Modules.Panels
 import qs.Modules.overview
+import qs.Modules.wallpaperPicker
 import qs.Services
 import Quickshell.Hyprland
 
@@ -41,6 +42,11 @@ Item {
     WallpaperPanel {
         id: wallpaperPanel
 
+        globalState: root.context.appState
+    }
+
+    WallPicker {
+        id: wallpicker
         globalState: root.context.appState
     }
 

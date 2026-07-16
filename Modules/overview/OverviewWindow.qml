@@ -3,9 +3,9 @@ import QtQuick.Layouts
 import QtQuick.Effects
 import Quickshell
 import Quickshell.Wayland
-import "./common"
-import "./common/functions"
-import "./Services"
+import qs.Core.overview.Common
+import qs.Core.overview.Common.functions
+import qs.Services
 
 Item { // Window
     id: root

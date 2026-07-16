@@ -4,11 +4,11 @@ import QtQuick.Layouts
 import Quickshell
 import Quickshell.Wayland
 import Quickshell.Hyprland
-import "./common"
-import "./common/functions"
-import "./common/widgets"
-import "./Services"
+import qs.Core.overview.Common
+import qs.Core.overview.Common.functions
+import qs.Core.overview.Common.widgets
 import "."
+import qs.Services
 
 Item {
     id: root
@@ -45,6 +45,10 @@ Item {
     property real workspaceSpacing: Config.options.overview.workspaceSpacing
     property string emptyWorkspaceWallpaperPath: Config.options.overview.emptyWorkspaceWallpaper
     property string specialEmptyWorkspaceWallpaperPath: Config.options.overview.specialEmptyWorkspaceWallpaper
+    property string currentWallpaper: WallpaperService.getWallpaper(monitor?.name ?? "")
+    // Component.onCompleted: {
+    //     currentWallpaper = WallpaperService.getWallpaper(monitor?.name ?? "")
+    // }
     property bool showSpecialWorkspaces: Config.options.overview.showSpecialWorkspaces
     property var configuredSpecialWorkspaces: Config.options.overview.specialWorkspaces ?? []
     property int specialWorkspaceColumns: Math.max(1, Config.options.overview.specialWorkspaceColumns)
@@ -121,7 +125,11 @@ Item {
     }
 
     readonly property bool hasSpecialWorkspaceSection: visibleSpecialWorkspaces.length > 0
-    readonly property bool hasEmptyWorkspaceWallpaper: `${emptyWorkspaceWallpaperPath ?? ""}`.trim().length > 0
+    // readonly property bool hasEmptyWorkspaceWallpaper:  {
+    //     const configPath = `${emptyWorkspaceWallpaperPath ?? ""}`.trim();
+    //     return configPath.length > 0 || `${currentWallpaper ?? ""}`.trim().length > 0;
+    // }
+    readonly property bool hasEmptyWorkspaceWallpaper: emptyWorkspaceWallpaperPath.length > 0 || currentWallpaper.length > 0
     readonly property bool hasSpecialEmptyWorkspaceWallpaper: `${specialEmptyWorkspaceWallpaperPath ?? ""}`.trim().length > 0
     readonly property string createSpecialWorkspaceTarget: "__create_special_workspace__"
     readonly property real specialWorkspaceTileHeight: root.workspaceImplicitHeight
@@ -376,6 +384,18 @@ Item {
         }
     }
 
+    Connections {
+        target: WallpaperService
+        function onWallpaperChanged(screenName, path) {
+            if (screenName === root.monitor?.name)
+                root.currentWallpaper = path
+        }
+        function onIsInitializedChanged() {
+            if (WallpaperService.isInitialized)
+                root.currentWallpaper = WallpaperService.getWallpaper(root.monitor?.name ?? "")
+        }
+    }
+
     StyledRectangularShadow {
         target: overviewBackground
     }
@@ -481,7 +501,8 @@ Item {
                                 id: workspaceWallpaper
                                 visible: workspace.showWallpaper
                                 anchors.fill: parent
-                                source: root.wallpaperSource(root.emptyWorkspaceWallpaperPath)
+                                // source: root.wallpaperSource(root.emptyWorkspaceWallpaperPath)
+                                source: root.wallpaperSource(root.currentWallpaper.length > 0 ? root.currentWallpaper : root.emptyWorkspaceWallpaperPath)
                                 fillMode: Image.PreserveAspectCrop
                                 asynchronous: true
                                 cache: true
@@ -500,7 +521,7 @@ Item {
                             Item {
                                 id: workspaceWallpaperMask
                                 anchors.fill: parent
-                                visible: false
+                                visible: workspace.showWallpaper
                                 layer.enabled: true
                                 layer.smooth: true
                                 Rectangle {

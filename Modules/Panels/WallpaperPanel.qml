@@ -10,6 +10,7 @@ import qs.Core
 import qs.Modules.Corners
 import qs.Services
 
+// THIS FEATURE NO LONGER USED 
 PanelWindow {
     id: root
 

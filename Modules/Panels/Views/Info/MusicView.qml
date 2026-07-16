@@ -26,7 +26,7 @@ Item {
     Rectangle {
             id: cardBackground
             anchors.fill: parent
-            radius: 16
+            radius: 25
             color: "#1a1a1a"
             border.width: 1
             border.color: theme.border

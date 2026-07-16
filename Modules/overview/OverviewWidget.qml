@@ -46,9 +46,6 @@ Item {
     property string emptyWorkspaceWallpaperPath: Config.options.overview.emptyWorkspaceWallpaper
     property string specialEmptyWorkspaceWallpaperPath: Config.options.overview.specialEmptyWorkspaceWallpaper
     property string currentWallpaper: WallpaperService.getWallpaper(monitor?.name ?? "")
-    // Component.onCompleted: {
-    //     currentWallpaper = WallpaperService.getWallpaper(monitor?.name ?? "")
-    // }
     property bool showSpecialWorkspaces: Config.options.overview.showSpecialWorkspaces
     property var configuredSpecialWorkspaces: Config.options.overview.specialWorkspaces ?? []
     property int specialWorkspaceColumns: Math.max(1, Config.options.overview.specialWorkspaceColumns)
